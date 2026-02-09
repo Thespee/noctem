@@ -1,6 +1,6 @@
 # Noctem Setup Summary
 
-*Last updated: 2026-02-08 (evening)*
+*Last updated: 2026-02-08 (night) — Phase 2 Complete*
 
 ## What Is Noctem?
 
@@ -33,22 +33,36 @@ noctem/
 │   ├── cache.py         # File-based TTL cache
 │   ├── robots.py        # Robots.txt compliance
 │   └── rate_limit.py    # Per-domain throttling
+├── birth/               # Phase 2: Autonomous setup ✓ NEW
+│   ├── run.py           # Entry point
+│   ├── state.py         # BirthStage enum, persistence
+│   ├── notify.py        # Signal notifications
+│   ├── umbilical.py     # /umb commands, reverse SSH
+│   ├── stages/          # 10 modular stages
+│   │   ├── s01_detect.py    # OS/hardware detection
+│   │   ├── s02_network.py   # Connectivity tests
+│   │   ├── s03_system_deps.py  # apt packages
+│   │   ├── s04_python_deps.py  # pip packages
+│   │   ├── s05_ollama.py    # Install + pull models
+│   │   ├── s06_signal_cli.py   # Download/install
+│   │   ├── s07_noctem_init.py  # Config + DB init
+│   │   ├── s08_test_skills.py  # Skill validation
+│   │   ├── s09_autostart.py    # systemd setup
+│   │   └── s10_cleanup.py      # Finalization
+│   └── templates/       # systemd service files
 ├── tests/               # Test suite
 │   ├── test_web_skills.py
-│   └── local/           # Comprehensive local tests ✓ NEW
+│   └── local/           # Comprehensive local tests
 │       ├── run_all.py       # Master test runner
-│       ├── test_utils.py    # Cache, robots, rate_limit
-│       ├── test_state.py    # SQLite state management
-│       ├── test_shell_skill.py  # Shell + safety tests
-│       ├── test_file_ops_skill.py
-│       ├── test_skill_runner.py
-│       └── ...              # 9 test modules total
+│       ├── test_birth.py    # Birth process tests ✓ NEW
+│       └── ...              # 10 test modules total
 ├── docs/
-│   └── VISION.md        # Full idealized architecture
+│   ├── VISION.md        # Full idealized architecture
+│   └── USB_SETUP.md     # Beginner USB creation guide ✓ NEW
 └── mvp steps/           # Implementation guides
     ├── 01-web-skills.md  ✓ COMPLETE
-    ├── 02-birth.md       ◯ NEXT
-    ├── 03-parent.md      ◯ PENDING
+    ├── 02-birth.md       ✓ COMPLETE
+    ├── 03-parent.md      ◯ IN PROGRESS (parallel)
     └── 04-email.md       ◯ PENDING
 ```
 
@@ -132,16 +146,16 @@ noctem/
 
 ### Operational Features
 
-| Feature | Idealized | Current | Gap |
-|---------|-----------|---------|-----|
-| Auto-start on boot | ✓ | ◯ | Phase 2 (birth) |
-| Birth process | ✓ | ◯ | Phase 2 |
-| Umbilical recovery | ✓ | ◯ | Phase 2 |
-| Parent monitoring | ✓ | ◯ | Phase 3 |
-| Babysitting reports | ✓ | ◯ | Phase 3 |
-| Warp integration | ✓ | ◯ | Phase 3 |
+|| Feature | Idealized | Current | Gap |
+||---------|-----------|---------|-----|
+|| Auto-start on boot | ✓ | ✅ | systemd services created |
+|| Birth process | ✓ | ✅ | 10-stage state machine |
+|| Umbilical recovery | ✓ | ✅ | /umb commands + reverse SSH |
+|| Parent monitoring | ✓ | ◯ | Phase 3 |
+|| Babysitting reports | ✓ | ◯ | Phase 3 |
+|| Warp integration | ✓ | ◯ | Phase 3 |
 
-**Progress: ~5%** - All operational features pending in Phases 2-3.
+**Progress: ~55%** - Birth complete. Parent features pending in Phase 3.
 
 ### Security Model
 
@@ -161,11 +175,11 @@ noctem/
 ## Overall Progress
 
 ```
-██████░░░░░░░░░░░░░░ 25% toward idealized vision
+██████████░░░░░░░░░░ 50% toward idealized vision
 
 Phase 1 (Web Skills):     ████████████████████ 100% ✓
-Phase 2 (Birth):          ░░░░░░░░░░░░░░░░░░░░   0%
-Phase 3 (Parent):         ░░░░░░░░░░░░░░░░░░░░   0%
+Phase 2 (Birth):          ████████████████████ 100% ✓
+Phase 3 (Parent):         ░░░░░░░░░░░░░░░░░░░░   0% (in progress)
 Phase 4 (Email):          ░░░░░░░░░░░░░░░░░░░░   0%
 ```
 
@@ -181,13 +195,13 @@ Phase 4 (Email):          ░░░░░░░░░░░░░░░░░░
 
 ### What's Missing
 
-1. **Autonomous setup** (birth process) - must manually install deps
-2. **Error recovery** (umbilical) - no remote help when stuck
+1. ~~**Autonomous setup** (birth process)~~ ✓ Complete
+2. ~~**Error recovery** (umbilical)~~ ✓ Complete
 3. **Remote monitoring** (parent) - can't check status from elsewhere
 4. **Self-improvement** - no learning from interactions yet
 5. **Email integration** - can't read/send emails
 6. **Encrypted storage** - credentials in plaintext config
-7. **Auto-start** - must manually start after reboot
+7. ~~**Auto-start**~~ ✓ systemd services ready
 
 ---
 
@@ -201,14 +215,15 @@ Phase 4 (Email):          ░░░░░░░░░░░░░░░░░░
 - [x] Robots.txt compliance
 - [x] Troubleshoot skill
 
-### Week 2 (Next)
-- [ ] Birth state machine
-- [ ] Signal progress notifications
-- [ ] Dependency checking
-- [ ] `/umb` umbilical commands
-- [ ] systemd auto-start
+### Week 2 ✅ COMPLETE
+- [x] Birth state machine (10 stages with checkpoint/resume)
+- [x] Signal progress notifications
+- [x] Dependency checking (system + Python)
+- [x] `/umb` umbilical commands (reverse SSH tunnel)
+- [x] systemd auto-start (noctem.service + noctem-birth.service)
+- [x] USB setup documentation for beginners
 
-### Week 3
+### Week 3 (In Progress - Parallel Agent)
 - [ ] Parent protocol
 - [ ] Remote status checks
 - [ ] History retrieval
@@ -388,3 +403,69 @@ TEST_SKILLS → run full suite
 ---
 
 *Built with assistance from Warp Agent*
+
+---
+
+## Addendum: Phase 2 Birth Implementation (2026-02-08 Night)
+
+### What Was Built
+
+Complete **autonomous first-time setup system** (17 files, ~3000 lines):
+
+| Component | Files | Purpose |
+|-----------|-------|--------|
+| State machine | `state.py` | BirthStage enum, JSON persistence, checkpoint/resume |
+| Notifications | `notify.py` | Signal progress updates via daemon or CLI |
+| Umbilical | `umbilical.py` | `/umb` commands, reverse SSH tunnel (30min timeout) |
+| 10 Stages | `stages/s01-s10` | Modular setup with check/run/verify/rollback |
+| Services | `templates/` | systemd oneshot (birth) + main service |
+| Docs | `USB_SETUP.md` | Beginner guide: USB creation → first boot |
+| Tests | `test_birth.py` | Mock-based validation |
+
+### Birth Stage Sequence
+
+```
+DETECT → NETWORK → SYSTEM_DEPS → PYTHON_DEPS → OLLAMA →
+SIGNAL_CLI → NOCTEM_INIT → TEST_SKILLS → AUTOSTART → CLEANUP → COMPLETE
+```
+
+Each stage: checks prerequisites → executes → verifies → reports via Signal.
+
+### Key Design Decisions
+
+1. **Checkpoint persistence**: State saved to `data/.birth_state.json` after each stage. Power loss = resume from last successful stage.
+
+2. **Umbilical protocol**: When stuck, sends Signal help request with `/umb` command menu. Parent can SSH in via reverse tunnel.
+
+3. **Beginner-first docs**: `USB_SETUP.md` assumes zero Linux experience. Step-by-step from Rufus to first Signal message.
+
+4. **Service gating**: `noctem.service` has `ConditionPathExists=.birth_complete` — won't start until birth succeeds.
+
+### Deployment Model Clarified
+
+```
+┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
+│   Windows PC    │ ───▶ │   1TB USB Boot  │ ◀─── │  Parent Agent   │
+│  (MVP Dev)      │      │  Ubuntu Server  │      │  (Remote Help)  │
+│  Warp + Git     │      │  Ollama + Signal│      │  SSH + Signal   │
+└─────────────────┘      └─────────────────┘      └─────────────────┘
+     Phase 1                  Phase 2                  Phase 3
+```
+
+### Speculations on Moving Toward Ideals
+
+1. **Shared partition automation**: Currently documented manually; could become optional `s11_shared_partition.py` stage using `parted` + `mkfs.exfat`.
+
+2. **Signal registration stage**: Birth assumes Signal already registered. Could add polling stage that waits for registration and notifies when ready.
+
+3. **Model pull progress**: Largest wait is Ollama model download. Could parse `ollama pull` output for percentage and send periodic Signal updates.
+
+4. **Test-driven birth validation**: Stage `s08_test_skills` runs basic checks. Could integrate with `tests/local/run_all.py` for comprehensive validation.
+
+5. **Birth ↔ Parent handoff**: Birth ends with `/umb` capability. Parent phase should extend this with `/parent` commands for ongoing remote management.
+
+6. **LoRA data collection**: After Parent phase, skill execution logs in SQLite could feed self-improvement training (per VISION.md).
+
+---
+
+*Phase 2 implementation: Warp Agent (commit 5e6e794)*
