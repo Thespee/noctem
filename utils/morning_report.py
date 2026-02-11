@@ -54,13 +54,19 @@ def generate_morning_report() -> str:
             lines.append(f"  • {t['title']}")
         lines.append("")
     
-    # TODO: Add calendar events here when calendar.py is ready
-    # from utils.calendar import get_todays_events
-    # events = get_todays_events()
-    # if events:
-    #     lines.append("📅 Today's events:")
-    #     for e in events:
-    #         lines.append(f"  • {e['time']} - {e['title']}")
+    # Calendar events
+    try:
+        from utils.calendar import get_events_for_date, format_event
+        events = get_events_for_date()
+        if events:
+            lines.append("📅 Today's Events:")
+            for e in events[:5]:
+                lines.append(f"  • {format_event(e)}")
+            if len(events) > 5:
+                lines.append(f"  ...and {len(events) - 5} more")
+            lines.append("")
+    except Exception:
+        pass  # Calendar not configured
     
     lines.append("Have a great day! 💪")
     
