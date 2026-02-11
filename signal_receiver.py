@@ -178,20 +178,22 @@ class SignalReceiver:
             from skills.task_manager import handle_done_command
             return handle_done_command(args)
         
+        elif cmd == "/morning":
+            try:
+                from utils.morning_report import generate_morning_report
+                return generate_morning_report()
+            except Exception as e:
+                return f"Error generating report: {e}"
+        
         elif cmd == "/help":
             return """Commands:
 /ping - Test (responds 'pong')
-/echo <text> - Echo test
-/status - Show current status
 /tasks - List pending tasks
-/add <title> - Add a task (/add Buy milk in Shopping)
+/add <title> - Add task (/add Buy milk in Shopping)
 /done <id> - Complete a task
-/queue - Show daemon task queue
-/last - Show last received message
-/cancel <id> - Cancel a daemon task
-/priority <id> <1-10> - Change priority
+/morning - Morning briefing
+/status - System status
 /report - Generate daily report
-/email - Email commands (check, send test)
 /help - This message"""
         
         else:
