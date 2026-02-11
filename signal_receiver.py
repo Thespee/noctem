@@ -442,6 +442,19 @@ class SignalReceiver:
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 sock.settimeout(10)
                 sock.connect((SIGNAL_DAEMON_HOST, SIGNAL_DAEMON_PORT))
+                
+                # Subscribe to receive messages (required for newer signal-cli versions)
+                subscribe_request = {
+                    "jsonrpc": "2.0",
+                    "method": "subscribeReceive",
+                    "params": {"account": self.phone},
+                    "id": 1
+                }
+                sock.sendall((json.dumps(subscribe_request) + "\n").encode())
+                # Read subscription response
+                sub_response = sock.recv(4096).decode()
+                print(f"📱 Subscribed to messages: {sub_response[:100]}...")
+                
                 print(f"📱 Connected! Waiting for messages...")
                 
                 sock.settimeout(None)  # Block forever waiting for messages
