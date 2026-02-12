@@ -6,59 +6,118 @@ Get Noctem running on your Ubuntu Server USB in 10-15 minutes.
 
 - Ubuntu Server running on the USB
 - SSH access from another machine
-- A phone with Signal installed
+- A Telegram account
 
 ---
 
-## Step 1: Pull Latest Code (1 min)
+## Fresh Install: Automated Setup (Optional)
 
-```bash
-cd ~/data/noctem
-git pull
-```
+The `autoinstall/` folder contains Ubuntu autoinstall files for unattended installation.
+
+### Preparing the Autoinstall
+
+1. **Get your USB serial number** (on Windows PowerShell):
+   ```powershell
+   Get-Disk | Select-Object Number, FriendlyName, SerialNumber, Size
+   ```
+
+2. **Edit `autoinstall/user-data`**:
+   - Line 20: Remove the SSH key line (or add your public key)
+   - Lines 32-33: Change `size: largest` to target your USB:
+     ```yaml
+     match:
+       serial: "YOUR_USB_SERIAL_HERE"
+     ```
+
+3. **Copy to installer USB**:
+   - Create `autoinstall/` folder at root of Ubuntu Server installer USB
+   - Copy `user-data` and `meta-data` into it
+
+4. **Boot and trigger autoinstall**:
+   - Boot from installer USB
+   - At GRUB menu, press `e` to edit
+   - Add to the `linux` line: `autoinstall ds=nocloud;s=/cdrom/autoinstall/`
+   - Press F10 to boot
+
+**Default credentials**: username `noctem`, password `noctem`
 
 ---
 
-## Step 2: Set Up Signal (10 min)
+## Quick Setup Commands (After Fresh Ubuntu Install)
+
+SSH into the machine and run these commands:
 
 ```bash
-chmod +x scripts/setup_signal.sh
-./scripts/setup_signal.sh
-```
+# Update system and install dependencies
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y python3 python3-pip git curl
 
-Choose option 1 (Link as secondary device) and:
-1. Open Signal on your phone
-2. Go to Settings → Linked Devices → Link New Device
-3. Scan the QR code shown in the terminal
+# Set timezone
+sudo timedatectl set-timezone America/Los_Angeles
 
----
+# Clone the repo
+mkdir -p ~/data
+cd ~/data
+git clone https://github.com/Thespee/noctem.git
+cd noctem
 
-## Step 3: Configure (2 min)
-
-```bash
-# Create config from example
+# Create config
 cp data/config.example.json data/config.json
 
-# Edit with your phone number
+# Edit config with your Telegram bot token (see Telegram Setup below)
 nano data/config.json
 ```
 
-Change `+1YOURNUMBER` to your actual Signal phone number (with country code).
-
 ---
 
-## Step 4: Start Noctem (1 min)
+## Telegram Setup (5 min)
 
-```bash
-chmod +x scripts/start_noctem.sh scripts/stop_noctem.sh
-./scripts/start_noctem.sh
+### 1. Create a Telegram Bot
+
+1. Open Telegram and search for `@BotFather`
+2. Send `/newbot`
+3. Choose a name (e.g., "Noctem Assistant")
+4. Choose a username (e.g., `noctem_assistant_bot`)
+5. **Copy the API token** - looks like `123456789:ABCdefGHIjklMNOpqrsTUVwxyz`
+
+### 2. Get Your Chat ID
+
+1. Start a chat with your new bot (send any message)
+2. Visit: `https://api.telegram.org/bot<YOUR_TOKEN>/getUpdates`
+3. Find `"chat":{"id":123456789}` - that number is your chat ID
+
+### 3. Configure Noctem
+
+Edit `data/config.json`:
+```json
+{
+    "telegram_token": "YOUR_BOT_TOKEN_HERE",
+    "telegram_chat_id": "YOUR_CHAT_ID_HERE",
+    "model": "qwen2.5:7b",
+    "router_model": "qwen2.5:1.5b",
+    "timezone": "America/Los_Angeles"
+}
 ```
 
 ---
 
-## Step 5: Test! (1 min)
+## Start Noctem
 
-Send a Signal message to your phone number:
+```bash
+cd ~/data/noctem
+python3 main.py
+```
+
+Or in headless/daemon mode:
+```bash
+python3 main.py --headless
+```
+
+---
+
+## Test It!
+
+Send a message to your bot on Telegram:
 ```
 /ping
 ```
@@ -79,18 +138,13 @@ Try other commands:
 ## Optional: Auto-Start on Boot
 
 ```bash
-# Copy service files
-sudo cp scripts/signal-daemon.service /etc/systemd/system/
+# Copy service file
 sudo cp scripts/noctem.service /etc/systemd/system/
 
-# Edit signal-daemon.service to set your phone number
-sudo nano /etc/systemd/system/signal-daemon.service
-# Replace SIGNAL_PHONE_PLACEHOLDER with +1YOURNUMBER
-
-# Enable services
+# Enable and start
 sudo systemctl daemon-reload
-sudo systemctl enable signal-daemon noctem
-sudo systemctl start signal-daemon noctem
+sudo systemctl enable noctem
+sudo systemctl start noctem
 ```
 
 ---
@@ -113,39 +167,24 @@ sudo systemctl list-timers | grep noctem
 
 ## File Locations
 
-| What | Where |
-|------|-------|
-| Config | `~/data/noctem/data/config.json` |
-| Database | `~/data/noctem/data/noctem.db` |
-| Logs | `/tmp/noctem.log`, `/tmp/signal-daemon.log` |
-| Birthdays | `/mnt/shared/birthdays.csv` |
-| Calendar | `/mnt/shared/calendar/calendar.ics` |
+- Config: `~/data/noctem/data/config.json`
+- Database: `~/data/noctem/data/noctem.db`
+- Logs: `/tmp/noctem.log`
 
 ---
 
 ## Stopping Noctem
 
 ```bash
-./scripts/stop_noctem.sh
-```
+# If running in foreground: Ctrl+C
 
-Or if using systemd:
-```bash
-sudo systemctl stop noctem signal-daemon
+# If using systemd:
+sudo systemctl stop noctem
 ```
 
 ---
 
 ## Troubleshooting
-
-### Signal not responding
-```bash
-# Check if signal-cli daemon is running
-pgrep -f "signal-cli.*daemon"
-
-# Check logs
-tail -50 /tmp/signal-daemon.log
-```
 
 ### Noctem not responding
 ```bash
@@ -156,9 +195,14 @@ pgrep -f "python3.*main.py"
 tail -50 /tmp/noctem.log
 ```
 
-### Test locally without Signal
+### Test locally without Telegram
 ```bash
 cd ~/data/noctem
+python3 main.py -c "hello"
+```
+
+### Test morning report
+```bash
 python3 -c "from utils.morning_report import generate_morning_report; print(generate_morning_report())"
 ```
 

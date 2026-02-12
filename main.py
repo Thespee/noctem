@@ -17,7 +17,6 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 import state
 from daemon import get_daemon, quick_chat
-from signal_receiver import get_receiver
 from skill_runner import load_config, list_skills
 
 
@@ -119,40 +118,32 @@ def start_services(headless: bool = False):
     
     daemon.start()
     
-    # Start Signal receiver if configured
-    if config.get("signal_phone"):
-        receiver = get_receiver()
-        receiver.start()
-        
-        # Send boot notification if enabled
-        if config.get("boot_notification"):
-            try:
-                from skills.signal_send import SignalSendSkill
-                skill = SignalSendSkill()
-                from skills.base import SkillContext
-                ctx = SkillContext(config=config)
-                skill.execute({"message": msg}, ctx)
-            except Exception as e:
-                print(f"Could not send Signal notification: {e}")
+    # Start Telegram receiver if configured
+    if config.get("telegram_token"):
+        from telegram_receiver import get_telegram_receiver
+        receiver = get_telegram_receiver()
+        if receiver.start():
+            print("  ✓ Telegram connected")
             
-            # Also send via email if configured
-            try:
-                from utils.vault import get_credential
-                if get_credential("email_user"):
-                    from skills.email_send import send_email_smtp
-                    recipient = get_credential("email_recipient") or get_credential("email_user")
-                    import socket
-                    hostname = socket.gethostname()
-                    send_email_smtp(
-                        to=recipient,
-                        subject=f"🌙 Noctem Online - {hostname}",
-                        body=f"{msg}\n\n---\nSent from Noctem on {hostname}"
-                    )
-                    print(f"  ✓ Email notification sent")
-            except Exception as e:
-                print(f"  ⚠ Could not send email notification: {e}")
+            # Send boot notification if enabled
+            if config.get("boot_notification"):
+                try:
+                    receiver.send_message(f"🌙 {msg}")
+                except Exception as e:
+                    print(f"  ⚠ Could not send Telegram notification: {e}")
+        else:
+            print("  ⚠ Telegram failed to start")
+    # Fallback to Signal if configured (legacy)
+    elif config.get("signal_phone"):
+        try:
+            from signal_receiver import get_receiver
+            receiver = get_receiver()
+            receiver.start()
+            print("  ✓ Signal connected (legacy)")
+        except Exception as e:
+            print(f"  ⚠ Signal failed: {e}")
     else:
-        print("  ⚠ No signal_phone configured - Signal integration disabled")
+        print("  ⚠ No telegram_token configured - messaging disabled")
     
     print(f"  ✓ Daemon running")
     print(f"  ✓ {len(list_skills())} skills loaded")

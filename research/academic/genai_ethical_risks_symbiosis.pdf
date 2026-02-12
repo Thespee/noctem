@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en-US" xml:lang="en-US">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>
+		Generative AI and the Ethical Risks Associated with Human-Computer Symbiosis
+							| Weizenbaum Journal of the Digital Society
+			</title>
+
+	
+<link rel="icon" href="https://ojs.weizenbaum-institut.de/public/journals/2/favicon_en_US.png" />
+<meta name="generator" content="Open Journal Systems 3.3.0.22" />
+<link rel="alternate" type="application/atom+xml" href="https://ojs.weizenbaum-institut.de/index.php/wjds/gateway/plugin/WebFeedGatewayPlugin/atom">
+<link rel="alternate" type="application/rdf+xml" href="https://ojs.weizenbaum-institut.de/index.php/wjds/gateway/plugin/WebFeedGatewayPlugin/rss">
+<link rel="alternate" type="application/rss+xml" href="https://ojs.weizenbaum-institut.de/index.php/wjds/gateway/plugin/WebFeedGatewayPlugin/rss2">
+	<link rel="stylesheet" href="https://ojs.weizenbaum-institut.de/index.php/wjds/$$$call$$$/page/page/css?name=stylesheet" type="text/css" /><link rel="stylesheet" href="https://ojs.weizenbaum-institut.de/index.php/wjds/$$$call$$$/page/page/css?name=font" type="text/css" /><link rel="stylesheet" href="https://ojs.weizenbaum-institut.de/lib/pkp/styles/fontawesome/fontawesome.css?v=3.3.0.22" type="text/css" /><link rel="stylesheet" href="https://ojs.weizenbaum-institut.de/plugins/generic/citations/css/citations.css?v=3.3.0.22" type="text/css" /><link rel="stylesheet" href="https://ojs.weizenbaum-institut.de/plugins/generic/embeddedHtmlGalley/style/htmlGalley.css?v=3.3.0.22" type="text/css" /><style type="text/css"></style><link rel="stylesheet" href="https://ojs.weizenbaum-institut.de/plugins/generic/paperbuzz/paperbuzzviz/assets/css/paperbuzzviz.css?v=3.3.0.22" type="text/css" /><link rel="stylesheet" href="https://ojs.weizenbaum-institut.de/public/journals/2/styleSheet.css?d=2023-07-06+16%3A26%3A13" type="text/css" />
+</head>
+<body class="pkp_page_article pkp_op_view has_site_logo" dir="ltr">
+
+	<div class="pkp_structure_page">
+
+				<header class="pkp_structure_head" id="headerNavigationContainer" role="banner">
+						
+ <nav class="cmp_skip_to_content" aria-label="Jump to content links">
+	<a href="#pkp_content_main">Skip to main content</a>
+	<a href="#siteNav">Skip to main navigation menu</a>
+		<a href="#pkp_content_footer">Skip to site footer</a>
+</nav>
+
+			<div class="pkp_head_wrapper">
+
+				<div class="pkp_site_name_wrapper">
+					<button class="pkp_site_nav_toggle">
+						<span>Open Menu</span>
+					</button>
+										<div class="pkp_site_name">
+																<a href="						https://ojs.weizenbaum-institut.de/index.php/wjds/index
+					" class="is_img">
+							<img src="https://ojs.weizenbaum-institut.de/public/journals/2/pageHeaderLogoImage_en_US.png" width="1814" height="342" alt="Logo of the Weizenbaum Journal of the Digital Society" />
+						</a>
+										</div>
+				</div>
+
+				
+				<nav class="pkp_site_nav_menu" aria-label="Site Navigation">
+					<a id="siteNav"></a>
+					<div class="pkp_navigation_primary_row">
+						<div class="pkp_navigation_primary_wrapper">
+																				<ul id="navigationPrimary" class="pkp_navigation_primary pkp_nav_list">
+								<li class="">
+				<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/profile">
+					Profile
+				</a>
+									<ul>
+																					<li class="">
+									<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/about">
+										About
+									</a>
+								</li>
+																												<li class="">
+									<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/mission-statement">
+										Mission statement
+									</a>
+								</li>
+																												<li class="">
+									<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/publishing-with-us">
+										Publishing with us
+									</a>
+								</li>
+																												<li class="">
+									<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/ethics">
+										Publication ethics
+									</a>
+								</li>
+																												<li class="">
+									<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/funding">
+										Funding
+									</a>
+								</li>
+																		</ul>
+							</li>
+								<li class="">
+				<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/issue/archive">
+					Issues
+				</a>
+							</li>
+								<li class="">
+				<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/about/submissions">
+					Submission
+				</a>
+							</li>
+								<li class="">
+				<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/announcement">
+					Announcements
+				</a>
+							</li>
+								<li class="">
+				<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/people">
+					People
+				</a>
+									<ul>
+																					<li class="">
+									<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/about/editorialTeam">
+										Editorial team
+									</a>
+								</li>
+																												<li class="">
+									<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/editorial-board">
+										Editorial board
+									</a>
+								</li>
+																												<li class="">
+									<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/about/contact">
+										Contact
+									</a>
+								</li>
+																		</ul>
+							</li>
+			</ul>
+
+				
+
+																						<div class="pkp_navigation_search_wrapper">
+									<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/search" class="pkp_search pkp_search_desktop">
+										<span class="fa fa-search" aria-hidden="true"></span>
+										Search
+									</a>
+								</div>
+													</div>
+					</div>
+					<div class="pkp_navigation_user_wrapper" id="navigationUserWrapper">
+							<ul id="navigationUser" class="pkp_navigation_user pkp_nav_list">
+								<li class="profile">
+				<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/user/register">
+					Register
+				</a>
+							</li>
+								<li class="profile">
+				<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/login">
+					Login
+				</a>
+							</li>
+										</ul>
+
+					</div>
+				</nav>
+			</div><!-- .pkp_head_wrapper -->
+		</header><!-- .pkp_structure_head -->
+
+						<div class="pkp_structure_content has_sidebar">
+			<div class="pkp_structure_main" role="main">
+				<a id="pkp_content_main"></a>
+	<nav class="cmp_breadcrumbs" role="navigation" aria-label="You are here:">
+	<ol>
+		<li>
+			<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/index">
+				Home
+			</a>
+			<span class="separator">/</span>
+		</li>
+		<li>
+			<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/issue/archive">
+				Archives
+			</a>
+			<span class="separator">/</span>
+		</li>
+					<li>
+				<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/issue/view/5_1">
+					Vol. 5 No. 1 (2025)
+				</a>
+				<span class="separator">/</span>
+			</li>
+				<li class="current" aria-current="page">
+			<span aria-current="page">
+									Research Papers
+							</span>
+		</li>
+	</ol>
+</nav>
+
+
+<!-- +++ embedded HTML template +++ -->
+
+<article class="obj_article_details">
+
+		
+	<h1 class="page_title">
+		Generative AI and the Ethical Risks Associated with Human-Computer Symbiosis
+	</h1>
+
+	
+			<section class="item authors">
+			<h2 class="pkp_screen_reader">Authors</h2>
+			<ul class="authors">
+									<li>
+						<span class="name">
+							Caroline Stockman
+						</span>
+													<span class="affiliation">
+								University of Winchester, United Kingdom
+															</span>
+																	</li>
+							</ul>
+		</section>
+	
+	<div class="row">
+		<div class="main_entry">
+
+						
+						<div class="inline_html">
+				<p class="INHALT_H1"><span class="_idGenBNMarker-1">1 </span>Introduction</p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">This paper critically explores the human-technology relationship in current uses of generative AI (GenAI) through the lens of existential philosophy. This paper’s historical perspective allows for critical caution around the ethical risks that emerge. This is an original reflection that questions unbridled techno-optimistic, pro-use human-technology interaction. One particular instance of GenAI will serve as a practical example. The iterations of GenAI considered here are text-based and visual content production technologies that are supported by online information retrieval. Microsoft offers such a technology in the form of a product called Copilot, which uses its search engine Bing and builds on its previous GenAI platform, Bing Chat. Other popular GenAI platforms are ChatGPT, Scribe, and Bard (Sharma, 2024). While these platforms contend for market dominance, they offer similar functionalities. Copilot stands out as the product of a historically significant tech company. Copilot functionality was integrated throughout Microsoft products in an immediate, pervasive way. It is supported by a wide range of professional marketing materials, which will serve as real-world illustrations for the theoretical concepts. The philosophies of J.C.R Licklider and his contemporaries Douglas Engelbart and Norbert Wiener establish this paper’s theoretical foundations.</p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">Licklider and Engelbart were part of key US operations leading to the development of the ARPAnet. The Advanced Research Projects Agency (ARPA) was created in 1957 by the US Department of Defense as part of the US government’s response to the global politics of the time (Hauben &amp; Hauben, 1998). During 1962’s crucial development phase, Licklider became the first director of the research division leading this innovation (O’Neill, 1995). Licklider’s contemporaries described him as a “visionary” and “intellectual leader” (Fano, 1998, p. 16), although contemporary headlines in <span class="Kursiv">Forbes</span><span class="CharOverride-3"> </span>describe him as “the early computing visionary you’ve probably never heard of” (Webster, 2019). Nonetheless, modern academics trace the development of the internet (in part) to Licklider’s original vision and efforts (Kita, 2003). </p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">Two other early computing scientists enrich this paper’s theoretical framework: Wiener and Engelbart. The latter is known for various technical innovations, such as the development of a graphical user interface and the computer mouse (Engelbart, 1986). Both inventions are central to the desire to make computing more intuitive and interactive for everyday human use. Engelbart’s 1962 report for the Air Force Office of Scientific Research, <span class="Kursiv">Augmenting Human Intellect</span>, establishes a vision for human-technology interaction that explains when computing would be beneficial to stimulate human thought and intelligence (beyond military use). Although Wiener did not witness the 1969 achievement of the ARPAnet, dying in 1964, he was an important part of the intellectual community driving the vision for future technology. This was partly through his writing—including authoring the well-known book <span class="Kursiv">Cybernetics: Or Control and Communication in the Animal and the Machine</span>—and partly through cultivating a network of like-minded thinkers at MIT, which included Licklider (Hauben &amp; Hauben, 1998). </p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">Revisiting these pioneering ideas offers original insights that can help evaluate our present-day digital technology and inform ethical practice and policy, an important approach that has yet to be taken. Evaluating current developments through the lens of these early beginnings allows us to conceptually ground our present activities, recognizing that what we have today is the result of those initial visions and values. Much like the technical pioneers proposed, the way humans and machines interact (and how that affects human thought, education, and society) matters more than the technical innovation in itself. This raises the questions of whether their initial vision has been materialized in the contemporary use of GenAI and whether any of their ethical concerns have come to the fore.</p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">The early computing scientists had specific views on what kind of human-computer interaction would and would not be beneficial to human life and society. Section 2 discusses their underlying philosophies of human-computer interaction and to what extent those philosophies align with contemporary GenAI. Licklider and his vision for human-computer interaction are discussed in the first two parts of Section 2, followed by Engelbart’s pioneering report in “2.3 Augmenting the Human Intellect.” In 2.4, the analysis demonstrates the resonance between the theoretical vision of the early computing scientists and GenAI. Microsoft’s own marketing materials for Copilot—published between March 2023 and March 2024—will represent a primary source for the analysis. However, this is not a systematic analysis of the marketing materials, as Copilot is only used to illustrate how GenAI may fulfill those early visions of human-computer symbiosis. Section 2 concludes with an important note on the limitations of the theoretical framework, acknowledging the value of other perspectives in evaluating current techno-optimistic discourse. Next, Section 3 identifies three areas of ethical risk associated with achieving human-computer symbiosis using GenAI. This section draws more closely on Wiener’s (1964) work. The ethical cautions first emphasize the needs for personal and social responsibility as envisioned by the early computing scientists. Second, the core functionality of GenAI demands ethical concern regarding its role in knowledge production and information retrieval. Third, “the human” in human-computer symbiosis is re-emphasized as an element with ethical priority over technology. Although hardware and software have dramatically evolved since Licklider’s times, the underlying vision and values purport a very similar stance to present-day concerns for “ethical AI.” This is discussed in the final part of Section 3, underscoring the importance of critically investigating current technologies through a historical perspective.</p>
+			<p class="INHALT_H1"><span class="_idGenBNMarker-1">2 </span>GenAI Symbiosis: Copilot’s Promise</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">The following analysis draws on a specific GenAI to illustrate how it aligns with the vision of human-computer interaction outlined by Licklider and Engelbart. That is, Microsoft’s Copilot represents a possible material manifestation of their philosophy. For Licklider and Engelbart, the dimensions that define symbiotic relationships between people and technology were based on time efficiencies, the natural “feel” of the interaction, and an integrated technical engagement. The overall purpose was to enhance the environment for human creativity and intelligence. The early theoretical vision is juxtaposed with Copilot’s marketing materials, promising a potential symbiotic interaction.</p>
+			<p class="INHALT_H2"><span class="_idGenBNMarker-1">2.1 </span><span class="Reg">Licklider and the ARPAnet</span></p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">Licklider joined a well-funded, government-supported environment that generally aimed to advance groundbreaking research. One department was formed to conceptualize and implement new technologies for information storage and, perhaps more importantly, information exchange (Hauben &amp; Hauben, 1998). This became the specific interest of the Information Processing Techniques Office (IPTO), a division of ARPA (O’Neill, 1995). Seven years after establishing IPTO, the research group would manage to make this new information exchange device operational. At the time, in 1969, it was a network of only four computers in the Western US. Over the coming decades, this would develop into a powerful, fast, and global information and communication system. However, the ARPAnet is incorrectly attributed a lone-star status in the history of both computer networking and the dominance of US government or military influence. Campbell-Kelly and Garcia-Swartz (2013) show how private sector operations in the US and UK, for example, contributed to infrastructure and application development and boosted network protocol design, either intentionally or through a series of seemingly accidental histories. Although not credited with any particular technical breakthrough, Licklider is acknowledged for his inspired people management (Waldrop, 2001), his budget management (Kita, 2003), and his vision for human-technology interaction. As IPTO director, Licklider also brought together the people who would become central to the ARPAnet developments, such as Larry Roberts (Strawn, 2014) and Ivan Sutherland, the next IPTO director (Kita, 2003). The next section further details his vision for human-technology interaction; as Inga et al. (2023) recognize, this has been a foundational idea for present-day technology development.</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">Given the topic at hand, Marvin Minsky’s AI laboratory should be noted. Although Minsky noted Licklider as one of his mentors (Kita, 2003), their research would diverge (Waldrop, 2001). The AI laboratory was also funded by IPTO, but it pursues a different line of inquiry. Minsky’s vision and philosophy focuses on the endowment of human thought (and consciousness) to a machine, and a proposition that human thought could be optimized by becoming more machine-like. This paper’s purpose is not to question whether Minsky’s vision for AI has been achieved. It is an entirely different philosophy to Licklider, Engelbart, and Wiener. </p>
+			<p class="INHALT_H2"><span class="_idGenBNMarker-1">2.2 </span>Human-Computer Symbiosis</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">In <span class="Kursiv">Man-Computer Symbiosis,</span> Licklider (1960) sets out his vision for human-technology interaction. His colleagues commented on his excitement for the vision during presentations, visits, and personal interactions (Fano, 1998). Part of this vision included going beyond a closed command-and-control communication system and towards interactive, collaborative computing at a massive scale (O’Neill, 1995; Hauben &amp; Hauben, 1998). At this time, computers were still sizeable, costly, and single-minded machines, rendering Licklider’s ideas ambitious. The interaction he envisioned is intentional, in that human and machine would intentionally form a partnership towards a certain goal. Current scholars have described it as the highest form of cooperation, implying a close coupling and potentially continuous physical interaction (Inga et al., 2023). Later, Licklider used the terminology “man-computer partnership” (1965). In what follows, I will favor the terminology “human-computer” symbiosis (or partnership).</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">The proposed symbiotic nature of the human-computer interaction indicates that working together in harmony is preferable and more beneficial than not doing so. Those benefits may derive partly from speed and timeliness. It can take a long time to collect information and then read and interpret this information, especially to calculate, represent, or otherwise use certain data in a particular way to make it useful for human decision-making processes. For Licklider, much of this could be done more efficiently by (future) computers. The machines of his time were not yet the fast information-retrieval and data-processing systems required for that task. However, his ideas concerned not only technical innovation for its own sake but also the overarching desire to cultivate an improved environment for human thought. This is also demonstrated by the title of an earlier writing by Licklider: “The Truly SAGE System, or Toward a Man-Machine System for Thinking” (1957). SAGE was an ambitious digital computing project of the 1950s (Kita, 2003) that established a powerful technological system used by the US government to monitor intrusions into US airspace (Crocker, 2019). Though expensive and soon outdated, it was another foundational layer in the overall technical evolution of digital technology. In considering what a “truly sage” machine might look like, Licklider refocused on human intelligence and how machines might intelligently support the human intellect. </p>
+			<p class="INHALT_H2"><span class="_idGenBNMarker-1">2.3 </span>Augmenting the Human Intellect</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">Licklider and Engelbart were well-acquainted, and Engelbart’s work was funded by ARPA (Engelbart, 1986). Licklider’s existential thinking is echoed in Engelbart’s report <span class="Kursiv">Augmenting Human Intellect</span> (1962) and his later book chapter “A Conceptual Framework for the Augmentation of Man‘s Intellect”<span class="CharOverride-3"> </span>(1963). At the start of these writings, he specifies what he means by “augmenting the human intellect”: for technology to effectively support the human ability to solve complex problems or gain understanding for a particular human purpose. Later in the report, he clarifies that he does not envision an amplification of natural human intelligence, but a “synergistic structuring that pertains in the natural evolution of basic human capabilities” (p. 19). In relation to this synergy, he emphasizes,</p>
+			<p class="INHALT_Einzug-Flie-text">We do not speak of isolated clever tricks that help in particular situations. We refer to a way of life in an integrated domain where hunches, cut-and-try, intangibles, and the human “feel for a situation” usefully coexist with powerful concepts, streamlined terminology and notation, sophisticated methods, and high-powered electronic aids. (1962, p. 1). </p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">Generally, his propositions match Licklider’s ideas of a human-computer symbiosis or partnership, in that there is a clear benefit to using the machine for a particular task rather than not at all. </p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">Second, the benefit of use is not derived from small embellishments. Rather, the pioneers envision a much more integrated system or, to use Engelbart’s term, synergy. They propose human-machine interaction that fully allows machines to take on certain “burdens” to free up a human being’s time and “to devise and use even more complex procedures to better harness your talents” (Engelbart, 1962, p. 43). As a concrete example, Engelbart describes a writing machine, which could be used to compose new text in a more efficient manner. Rather than a human being spending time on the laborious process of drafting and redrafting (using pen and paper or analogue typewriters), proofreading and recomposing, searching for new information (without online search engines), summarizing, structuring, and editing, he suggests that much of this could be done by a machine. He also describes how interactions with this writing machine could be enhanced by a reading stylus capable of scanning over old passages of text to inform the creation of new text. His attention to the physicality of interactive computing points to his later inventions, such as the computer mouse (Engelbart, 1986).</p>
+			<p class="INHALT_H2"><span class="_idGenBNMarker-1">2.4 </span>Copilot</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">At the time of his writing, Licklider stated that no suitable computer existed for their vision. About fifty years later, computer scientists noted that the symbiotic goal was getting closer but remained to be achieved (Foster, 2006). Today, approximately sixty-five years after their writing, the prevalence of GenAI calls for a reassessment. To illustrate this, the following draws on the concrete example of Microsoft’s Copilot. </p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">Microsoft introduces its newest product as follows: “Copilot is going to change the way you get things done. Built to boost your productivity and spark creativity. It’s your everyday AI companion ready to lend a hand” (Microsoft, 2024b). Copilot is a GenAI, integrated across Microsoft apps and services. It is currently available for free (but with limited functionality) as a mobile app or web-based platform or as an integrated functionality of the Microsoft suite of products with a paid license of $20–30 per business user per month. A specific human use for these technologies is AI-powered online searches, although Copilot promises to be more than a search functionality: “like having a research assistant, personal planner, and creative partner at your side whenever you search the web” (Microsoft, 2024a). The introductory video shows how a person can enter a task or question, to which Copilot can draft a text with lay-out and structure. Copilot’s functionalities also include the rewriting of sections, summarization of text, addition of paragraphs, addition of images, and transformation of a text into a slideshow. </p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">Aiding speed of understanding or decision-making was central to the human-computer partnership proposed by Licklider and Engelbart, and Copilot can facilitate this by, for example, summarizing a document in three sentences or bullet points, listing pros and cons, creating an agenda, generating ideas, and identifying the strongest ideas for specific situations. Microsoft claims “70% of Copilot users [of 297 users surveyed globally] said they were more productive, and 68% said it improved the quality of their work” (2023b, p. 3). In addition, high numbers of people claim time-saving benefits, particularly in the context of mundane tasks (71%) and finding the needed information in their files (75%) (ibid., p. 7). This time-saving capacity was a central concern for Licklider, who indicated that 85% of his time “was spent getting into a position to think, to make a decision, to learn something I needed to know” (1960, p. 6). Therefore, a useful symbiotic interaction would task the machine with those time-consuming activities, which Copilot’s information search and organization functionality appears to do. Licklider further recognized that these technologies would have to “prove their value in dollars before they will find widespread demand” (1965, p. 35). According to Microsoft’s claims for Copilot, such an economic gain has indeed been measured (2023b, p. 20).</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">When using GenAI, the human user must formulate prompts in a certain way for the machine to generate meaningful or useful output. Prompts form the human-led communication with the computer: “Think about prompting like having a conversation, using plain but clear language and providing context like you would with an assistant” (Microsoft, 2023). Using everyday language was key to the vision of human-computer symbiosis. The idea appears in the work of Licklider, Engelbart, and their contemporaries, who discuss it in various technical and philosophical ways (Licklider, 1960; Licklider &amp; Clark, 1962; Licklider, 1965), consistently considering it possible to achieve, even if computers of the 1960s were far from capable of doing so. It took longer than expected to achieve good algorithmic natural language processing. In 1960, Licklider optimistically proposed that “the estimate of the time required to achieve practically significant speech recognition [is] perhaps five years” (p. 15). Today’s Copilot allows “[you to] search in a way that feels natural to how you talk, text, and think” so “you can chat naturally and ask follow-up questions to your initial search to get detailed replies” (Microsoft, 2024a). Interaction with Copilot, much like with other GenAI, is possible through written as well as spoken language input in (currently) Chinese (Simplified), English, French, German, Italian, Japanese, Portuguese, and Spanish. The computer’s ability to subsequently generate intelligible output also represents a technical feat. The suggestion to interact with it “as if you were talking to a person” (Microsoft, 2024a), or “a companion” or “a friend” (Microsoft, 2024b) echoes the ambitions of Licklider, who advised thinking in “interaction[s] with a computer in the same way that you think with a colleague whose competence supplements your own” (1960, p. 5). It implies a natural, intuitive interaction between humans and machines. However, formulating a question for a machine—like a prompt for a GenAI platform—can be quite difficult. Licklider suggested that it would require a human focus because it “forces one to think clearly […] it disciplines the thought process” to pose a problem that would elicit the desired information (Licklider, 1960, p. 11). Microsoft (2023) calls it “an art and a science,” and the proliferation of prompt suggestion documents shows an educational effort in training human beings to effectively interact with the machine. Symbiosis is a two-way street, with the potential benefits of the machine only successfully realized if people know how to use it for maximum benefit.</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">Overall, the proposed functionalities and marketing of Copilot—as a concrete example of GenAI—align with the early suggestions of the potential of machines to save time for human creativity and productivity (Licklider, 1960). This was the central concern of Licklider’s (1960) vision of human-computer interaction, a utopian vision that aligns with the techno-optimistic promises of Copilot’s marketing materials. Although this pro-use messaging is not atypical in the context of marketing and advertisement, there is much caution to exercise in approaching any utopia, technological or otherwise. </p>
+			<p class="INHALT_H2"><span class="_idGenBNMarker-1">2.5 </span>Limitations</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">This paper’s analytical framework is limited to these three thinkers and their immediate context. However, the development of the ARPAnet (and later the internet, the world wide web, and its many platforms) is a complex web of human thought and action. Some of these relate to recognized solitary or team inventions, but it is also likely that many have gone unrecognized. Although the current paper draws on the work of three male thinkers, many women were also part of the pioneering developments. For example, Ada Lovelace is credited as the first computer programmer on the basis of her nineteenth-century Analytical Engine. A contemporary pioneer to Licklider was Elizabeth J. Feinler, who was recruited to the US team by Douglas Engelbart (Abbate, 2002/2021). Under Feinler’s leadership, the team developed the domain name system still in use today. Meanwhile, beyond the 1960s US contributions discussed here, it should be noted that many other countries pioneered internet visions at different times. For example, the work of the nineteenth-century Belgian lawyers Paul Otlet and Henri La Fontaine pursued interests in information and knowledge retrieval later popularized by Licklider. They theorized the possibility of “the Mundaneum,” a democratic medium for access to knowledge at a global scale not unlike Licklider’s <span class="Kursiv">Libraries of the Future</span><span class="CharOverride-3"> </span>(1965). Henri’s sister, Léonie La Fontaine, played an energetic, impactful role in contributing to this idea in the spirit of women’s education and political empowerment. These and other perspectives are worth exploring when evaluating our current uses of technology to ensure alignment with positive visions for human-technology interaction and critical caution around proposals of technological utopias.</p>
+			<p class="INHALT_H1"><span class="_idGenBNMarker-1">3 </span>Key Areas of Risk</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">Although Licklider theorized an anticipated symbiotic future as tentatively desirable, he cautioned on the various ethical tensions it would pose. These early cautions are foundational to the following analysis, which is divided according to the three separate aspects that were central to the early computing scientists’ ideas. Each centers on a purported positive potential of GenAI to fulfil human-computer symbiosis that, nonetheless, carries associated ethical risks. The analysis will now draw more closely on Norbert Wiener’s thinking to enhance the already discussed views of Licklider and Engelbart. Wiener’s doubts echo in present-day concerns, nuancing any unbridled, pro-use stance towards GenAI. At times, the ethical risk appears so substantial that perhaps non-use of GenAI should be considered a preferable option.</p>
+			<p class="INHALT_H2"><span class="_idGenBNMarker-1">3.1 </span>Personal and Social Responsibility</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">In Licklider’s (1960) vision of human-computer partnerships, humans would play a steering role in formulating questions, defining criteria, and guiding the general line of thought while also serving as evaluators of the output. They would decide what to do with the data provided by the machine, which had performed the diagnosis, pattern-matching, and relevance-recognizing in response to the human lead. This is Copilot’s proposed functionality in the human-computer partnership. It may pull data together based on human prompts, but then, Microsoft adds, “it’s up to you to review and revise and really make it your own” (Microsoft, 2024b). Copilot can even conduct some preliminary evaluation of the data, but Licklider (1960) explicitly stated that this technical functionality had to remain secondary to the human side. Importantly, later interpretations of Licklider’s philosophies that suggest complete automation or cyborgization are not accurate representations of his views (Kita, 2003). This is also demonstrated by the fragmentation of Marvin Minsky’s line of inquiry, which focused on the reproduction of human intelligence in a machine (Waldrop, 2001). This suggests that the importance placed on human responsibility merits closer investigation. </p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">That concern over human responsibility resounds in the writings of other pioneers. For example, Wiener was deeply concerned with the unethical use of computers. Although he actively and enthusiastically participated in (and led) computing developments, he also abhors “gadget worshipers” (Wiener, 1964, p. 53). Again, he places a central focus on human-computer interaction rather than pursuing technical innovation as an end in itself: “[O]ne of the great future problems which we must face is that of the relation between man and the machine, of the functions which should properly be assigned to these two agencies” (Wiener, 1964, p. 71). For example, in a training module on the use of Copilot in the human resources context, Microsoft (2024c) suggests that Copilot can write a new job description, create a set of interview questions, analyze multiple resumes, and make recommendations regarding preferred candidates. The techno-utopian promise is true to human-computer symbiosis, meaning that human resources professionals can streamline their work processes and improve their productivity. However, it is disconcerting that an entire employee recruitment process (for “human” resources) can be handled by a machine. Copilot is presented as a “writing assistant,” shifting responsibility to the human staff as decision-makers, but the writing and analyzing process is not neutral in itself. Previous AI studies have shown that algorithms risk exacerbating existing biases against, for example, disabilities (Tilmes, 2022). GenAI may be used to overcome social and educational inequalities or conversely to impede such social progress (Rane, 2023). Humans may still intentionally deploy this technology for malicious or manipulative purposes, such as the creation of civil or political unrest (Kreps &amp; Kriner, 2023). Either way, Wiener firmly prioritizes ethical decision-making in technological use and development, advising against following the temptation to place the responsibility elsewhere, such as on “a mechanical device which one cannot fully understand but which has a presumed objectivity” (1964, p. 54). This air of objectivity does pervade perceptions of digital technology and even inspires “bias denial” regarding algorithmic decision-making (Stinson, 2022). That need to understand how the technology works relates to “transparency” as an ethical principle of AI use (Franzoni, 2023; OECD, 2024). However, critics have pointed out that transparency is hard to achieve as technology grows in complexity. It would also mean that a company must declare which training data was used to shape its Large Language Model (LLM). However, keeping such information undisclosed enhances the proprietary nature of products in a competitive market. The technical complexity reaffirms the central need for people to take responsibility for the use of GenAI, at least for now. This includes both end users and the tech companies that produce the AI. For example, Microsoft outlines an explicit approach to responsible AI for Copilot, aligned with its company-wide general AI principles (Microsoft, 2022). These documents reiterate principles of accountability, transparency, fairness, reliability, safety, privacy, security, and inclusiveness. In these company-wide standards, Goal A5 emphasizes human oversight and control (Microsoft, 2022). This includes human responsibility to override, intervene, or interrupt the system (p. 8), alongside other ethical standards, such as Goal A2: maintaining oversight of significant adverse impacts on people (p. 5) and Goal T1, which relates to decision-making. In the HR example given above, the company’s AI principles should be much more explicitly reflected in the training module for using Copilot for employee recruitment. However, in clarifying the product name, Microsoft’s Director of Product Marketing explains that</p>
+			<p class="INHALT_Einzug-Flie-text">In aviation terms[,] a copilot is responsible for assisting the pilot in command, sharing control of the airplane, and handling various navigational and operational tasks. Having a copilot ensures that there is a second trained professional who can take over controls if the main pilot is unable to perform their duties, thereby enhancing safety. (Beatman, 2023)</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">This description does appear to attribute a greater level of responsibility to the machine—for example, indicating “sharing control”—although there is also recognition of a “pilot in command,” recognizing human dominance in the interaction. However, when the human is “unable to perform their duties”, the technology may take over control entirely. This suggested inability seems alien to Licklider, Engelbart, and Wiener’s writing in the 1960s. For example, the intended automation of SAGE as an air defense system was instead envisioned to become “truly SAGE” by Licklider (1957), by which he did not mean full automation, but symbiotic technological development to boost human intelligence and creativity. Similarly, Engelbart (1963) did not propose an extension or automation of human intelligence but an augmentation. The vision does not suggest that machines should take control (Kita, 2003). In <span class="Kursiv">Cybernetics</span> (1948, 1961), Wiener further warns that the “metaphorical dominance of the machines” has become “a most immediate and non-metaphorical problem” (p. 27)<span class="CharOverride-4">. </span>Therefore, the suggestion that the machine could actually share control or take over control runs counter to the practical suggestions regarding AI ethics from the field’s pioneers. </p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">Therefore, in terms of responsibility, humans must maintain a core position at all times and in any role (whether as, for example, end user or developer). Licklider (1960) predominantly considered the end user, from steering to evaluating the machine’s output. This could (and sometimes, should) also lead to decisions of non-use when balancing personal benefit and social responsibility. For example, using GenAI has a significant carbon impact (Crawford, 2024), potentially rendering trivial use unethical. The symbiotic or synergistic philosophy only works if the cooperative venture produces more benefits than opting out. As such, the use of a GenAI may be beneficial at a personal level (for example, in the development of a personal fitness plan), but the impact at a global and social level (such as environmental cost) may render it unjustifiable when the personal benefit can be achieved by competitive alternative means. In any case, the theoretical framework postulates that human consciousness must guide this decision-making, highlighting the need for (1) academic study on the social impacts of GenAI, (2) the governance of AI and related responsibilities for tech companies, and (3) education that not only helps people to use it effectively but also ensures ethical use or non-use as an option. This priority of human responsibility will continue to inspire the next two dimensions of the analysis: information and knowledge production and the human element.</p>
+			<p class="INHALT_H2"><span class="_idGenBNMarker-1">3.2 </span>Information and Knowledge</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">GenAI plays a central role in human knowledge development by representing a content production technology that is also an information-search-and-retrieval tool. This was the core ambition for computers in human-computer symbiosis. In the partnership dynamic, people can fundamentally take on two roles: as the knowledge receiver and the (co-)producer of knowledge. One Copilot user states: “It helps [people] get to their ideas faster…It’s not there to replace them, it’s just something they can use to supercharge their ideas” (Microsoft, 2023b, p. 8).</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">In his spoken commentary at Carnegie Tech, Licklider suggested that computers would “revolutionize their access to information” (Waldrop, 2001, p. 180). This is also something discussed in his 1965 book <span class="Kursiv">Libraries of the Future</span>, which defines “the future” as “the year 2000” (Licklider, 1965, p. 12). He discusses the fact that although libraries represent a primary source of knowledge and information, they are subject to growing physical assets and ever more complex catalogue systems. The time-consuming nature of negotiating these systems for information search and retrieval—alongside considerable social thresholds associated with accessing or acquiring high-quality knowledge—make this an issue. Instead, Licklider describes a future of “procognitive systems” for everyday use (1965, p. 13), a different way of conceiving of the human-computer partnership in support of human intelligence. True to human-computer symbiosis, information search and retrieval should become faster and much more intuitive to support human knowledge gain and understanding. The intuitive process is captured by the concept of prompting in the context of GenAI platforms. Although Licklider did anticipate that computers would outperform human brains at some point (1960, p. 5), unlike Minsky, he did not enthusiastically pursue AI as a goal in itself. Licklider’s enthusiasm was for interactive computing to “give us our first look at unfettered thought” (Waldrop, 2001, p. 180). Therefore, computers would allow a creative blossoming of human thought and decisions, having freed up the time spent on tedious searching for information and organizing that information in an accessible format. As discussed in Section 2.4, Copilot’s functionality appears to offer that time-saving and human-enhancing symbiotic goal.</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">A first ethical risk is the non-critical readership of AI-generated output, which may include hateful biases, for example, or inaccurate but plausible information (O’Hagan, 2024). As the body of training material (for the LLM) grows, biases may erode (depending on the diversity of the training data). However, the training material continues to be based on human authorship, which varies in quality, reliability, and ethical positioning. As Microsoft (2023) has clarified, Copilot can also draw on the end user’s own files, so personal biases can be perpetuated in the machine’s output with a greater air of objectivity. In any case, there is a grave ethical risk in accepting <span class="Kursiv">any</span><span class="CharOverride-3"> </span>information as knowledge, but there is a paradoxical loop created in reaffirming a person’s own information as “the” information generated within the seemingly objective space of the machine. This makes it critical to (continue to) educate people on the underlying issues in their epistemic horizon. Further, an emotional bias involved in information gain may actually hinder knowledge development if true information is considered inaccurate (or vice versa) (Longoni et al., 2022). In addition, as Licklider has already recognized, the contributions of the computer may blend so completely with human input that it becomes hard to distinguish between them (1960, p. 6). Empirically, some evidence exists suggesting that this may be true today. For example, a study on the production of poetry (another Copilot potential) found that participants often fail to successfully attribute authorship correctly to a human or GenAI (in this case, GPT-2) (Köbis &amp; Mossink, 2021). Interestingly, participants were more likely to dislike the poems they perceived to be written by a GenAI. The authors suggest that this is due to poetry being an emotional, creative activity, the perceived domain of humans. However, they also suggest a creative opportunity whereby “humans and algorithms form hybrid writing teams and collaboratively craft fiction text” (p. 11). Provided that human thought maintains creative dominance, this could lead to human-computer symbiosis in poetic production (Licklider, 1960).</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">There is value in considering where and when information becomes knowledge. This is centrally linked to concepts of understanding and intelligence. The interaction with the machine may become so intuitive and natural—or human-like—that it does acquire the air of knowing and understanding. Microsoft’s own materials reaffirm this idea, in that Copilot builds an “understanding of context” through prompting (Cavanell, 2023). The (free-to-use, online) version of Copilot responds to the question “Do you understand context?” with the following: “Yes, I understand context! Context helps me provide more relevant and accurate responses. If you have any specific context or questions, feel free to share, and I’ll do my best to assist you,” followed by a happy smiley face. This enters the domain of Minsky’s work or the Turing test. In symbiotic terms, the ethical risk arises when “our new mechanical slaves will offer us a world in which we may rest from thinking” (Wiener, 1964, p. 69). If the technology advances to a stage where it dominates, hinders, replaces, or steers human thought, it would come at the cost of supreme demands upon our honesty and our intelligence. The world of the future will be an ever more demanding struggle against the limitations of our intelligence, not a comfortable hammock in which we can lie down to be waited upon by our robot slaves. (ibid., 1964, p. 69)</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">Not only can networked computers easily outperform the functioning of human brains in terms of information storage, retrieval, and processing, but they can also present information in an intuitive, human-like manner. This leads to a temptation to relinquish or wrongly attribute concepts such as understanding and intelligence to the machine, especially when it appears personable (person-able)—like “your everyday AI companion,” as per Microsoft Copilot’s current slogan. (Meanwhile, notions of “intelligence” and “understanding” continue to be debated in the context of human learning and pedagogy.) </p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">Aside from being the information-receiver, people are also (still) producers. Empirically, some early findings suggest that the presence of AI-produced insight will not necessarily deter other human authorship in the same space. In an empirical study, Su et al. (2023) found that GenAI answer production on an online Q&amp;A forum actually prompts an increase in human expert contributions. Similarly, although Copilot may provide drafts with appropriate layout and structure, Microsoft adds that it’s then up to you “to review and revise and really make it your own” (Microsoft, 2024b). As such, Microsoft guidance echoes the central position of the human. It reaffirms personal responsibility in light of knowledge production.</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">Notably, accepting AI-made content without further edits or consideration may actually spell a demise of human creativity, as discussed in the poetry example above. However, GenAI knowledge production has been found to be more beneficial than human knowledge production in some situations. For example, Joosten et al. (2024) conducted a comparative analysis of ideas generated by AI and humans and found that AI-generated ideas scored significantly higher in terms of novelty and customer benefit while remaining equally feasible to human ideas.</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">The domain of information and knowledge presents an interesting interplay between people and machines. There appears to be a benefit to GenAI’s ideation quality over human creativity, at least in some scenarios. However, human reception is filtered by emotional bias. Either way, the ethical responsibility resides with humans, who must critically use and evaluate GenAI. This may demand overcoming personal aversions, as well as remaining self-reflective in the perpetuation of personal biases. It also remains important to govern information production and maintain clarity in authorship. For human authorship, it appears the advent of GenAI does offer new, creative partnerships, provided, again, there exists an emphasis on values and ethics in content production. For the early computing scientists, higher-level value continues to be placed on the human side of the partnership. This poses a new task for education, demanding the teaching of creative, successful, ethical, and rational human-computer partnerships in the context of GenAI usage.</p>
+			<p class="INHALT_H2"><span class="_idGenBNMarker-1">3.3 </span>The Human Element</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">The philosophical emphasis in the discourse of interest has consistently been “the human.” While human-computer symbiosis implies balance, there is actually an asymmetric power relation. The dominance of the human is often considered preferable and also necessary. That prioritization may be under threat if “the human” becomes devalued somehow. This may occur in two ways: a reduction of the human to a replaceable element in the system or the reduction of the human to a data point for commercial profit.</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">Licklider published his seminal paper on human-computer symbiosis in the first issue of the <span class="Kursiv">IRE Transactions on Human Factors in Electronics </span>(1960). This was part of the developing research area that considered human to be “factors” or elements in a larger system (Kita, 2003, p. 70). This is also reflected in Engelbart’s 1962 report describing “the H-LAM/T system”: Human using Language, Artifacts, and Methodology, in which he is Trained. Although their philosophies place high value on human thought and creativity, they invite an intellectual horizon in which “the human” is a system component. This may paradoxically appear to devalue humans, given that components are typically replaceable. It also suggests humans (and their richness of thought and behavior) as calculative objectivity. However, Licklider, Engelbart, and others continued to emphasize what technology might mean for optimization on the human side of things (Kita, 2003), that is, for creativity and thinking. Licklider (1960) saw humans as flexible, able, and appreciative in comparison to the more constrained workings of the machine. None of these thinkers suggests the replacement of humans for machines as a desirable future, even if it might be possible. Instead, partnerships between humans and computers remain the preferable future, with humans taking a clear upper hand in the value ethics. This appears at the individual level but also societal. In <span class="Kursiv">Libraries of the Future</span>, Licklider (1965, p. 33) suggests a socioeconomic criterion for human-computer interaction: that society would be more productive or effective by using precognitive systems (supportive of human knowledge and intellect) than not. As such, responsibility and benefit are both placed on the human element (at an individual and societal level).</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">The terms “symbiosis”, “synergy,” and “partnership”, as well as “collaborating” or “teaming” all imply a close, beneficial cooperation. The benefit to the human user seems clear, but what might the machine gain from this partnership? Copilot, much like other GenAI, continues to enhance its algorithmic performance through human-computer interactions. Each prompt trains the algorithm further. This would seem to represent a symbiotic benefit. The machine interaction benefits the human, which improves the machine functionality, which in turn will increase human benefit - creating an ever-improving cycle. Nonetheless, this mechanism also implies the datafication of the human, a widespread ethical concern in digital society (Hand, 2018; Zuboff, 2015). For the machine to improve, it must turn human prompting, language, profiles, documents, etc. into calculative objectivity. The human is a data point. Related human rights and legal rights are not yet deemed fully sufficient to protect all people at all times, making certain data injustices still legally possible, even if seemingly unethical (Human Rights Watch, 2022). As such, although Microsoft proposes speaking to Copilot as “a companion” or “a friend” (Microsoft, 2024b), indicating the intuitive nature of the interaction, critics suggest “it’s a good idea not to enter private info in your interactions” (Muchmore, 2024). However, Microsoft also states that business and education accounts will not be used to train the LLM (Muchmore, 2024). If a person’s own files are used to improve the quality of outputs, they will also not be used to train the LLM (Cavanell, 2023). This points to an ethical position that certain data from certain people in certain situations should not be used instrumentally. </p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen">Again, this highlights that rigorous governance of technologies is central to a sustainable commercial industry of technology. The ethical importance of the human element in the symbiosis cannot be compromised. Values may shift, of course. For example, commercial gain through pervasive big data harvesting may be preferable, democratizing technology without high acquisition or subscription fees, and societal interpretations of “privacy” may change (Lyon, 2022). According to the early computing scientists discussed here, the priority remains human benefit and human responsibility, meaning that product development (which may imply greater human benefit) must be balanced against detriment (e.g., data injustice). Allen (2016) describes the balance of personal to social responsibility as “the sweet spot between public and private good.” Again, this places social responsibility on tech companies and effective governance systems for regulation. In education, it remains important to teach an appreciation for “the human element” in digital society, the original and primary focus of the early computing scientists in setting the course for the future of technology.</p>
+			<p class="INHALT_H2"><span class="_idGenBNMarker-1">3.4 </span>Current Research and Forward Motion</p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">The vision for human-computer symbiosis remains very much alive in present-day thinking. Other terminologies that have subsequently been used—either as synonyms or with slight theoretical nuances—include human-computer collaboration (Terveen, 1995) and, more recently, human-machine teaming (Brill et al., 2018). In scholarly work, human-computer symbiosis has continued its appeal in various practical and theoretical guises, even if authorship diverges in terms of its interpretation of control between humans and machines (Flemisch et al., 2016) and the physicality and oneness of human-machine systems (Inga et al., 2023). The “machine” side of the partnership may further incorporate various hardware, from screen-based technologies to smart collaborative robots (Kawasaki et al., 2024) and brain-computer interfaces (Dehais et al., 2022). Concrete applications have been proposed for various functions, such as assembly systems (Ferreira et al., 2014), image-based diagnostic medicine (Tschandl et al., 2020), aviation (Dehais et al., 2022), and dermatologic care (Nelson et al., 2018). Although hardware and software have dramatically evolved since Licklider’s lifetime, the underlying vision and values purport a very similar stance.</p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">As these applications continue to materialize, the scholarly calls to consider ethics in human-AI interaction also proliferate. Chen et al. (2023) note that although ethics should be a core step in technology development, it is often sidelined in practice. Their article, among others (Heyder et al., 2023; Brunello &amp; Croce, 2024), is consistent in cautioning against allowing the balance of decision-making power tip towards the machine. Especially in human-AI symbiosis, Heyder et al. (2023) theorize that it is more important than ever to consider the ethical areas of risk. This resonates with the personal and social responsibility emphasized by Wiener (1964) and others and the continued valuing of the human over the machine. For Zhou et al. (2021), human-AI interaction sees two intelligences merge into a symbiotic intelligence in which the machine can augment the human intelligence, exactly as suggested by Engelbart (1962) and others. Koering (2023) has echoed interest in the human, with an emphasis on human values, beliefs, and principles in the development and application of (Gen)AI. While the discussion acknowledges the complexity of human ethics, which are based on context and perspective, it ultimately recognizes the importance of self-reflection and personal responsibility. </p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">Overall, the present-day ethical positioning of human-AI interaction demonstrates a line of reasoning that builds on the logic historically established by the early computing scientists (and undoubtedly others, as noted in Section 2.5). It is important not to overlook the historical analysis contained here. Much of the current “ethical AI” discussion omits consideration of the beliefs, values, and perspectives of the early computing scientists, which set the development of our present-day technologies in motion. Both practically and philosophically, Licklider and many others have precipitated the computing ecosystem that we participate in today. This means that critically investigating modern technology through a philosophical-historical perspective is not only meaningful but also necessary.</p>
+			<p class="INHALT_H1"><span class="_idGenBNMarker-1">4 </span>Conclusion</p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">The central philosophy of the tech pioneers proposed a synergy, a symbiosis or a partnership between humans and computers. For them, it would be preferable for humans and machines to work together cooperatively instead of not at all. That can be formulated as the central question for evaluating GenAI use: Is it better for a person to use GenAI or not? There exist multiple ways of understanding that question. At the big-picture level, it questions whether society would be better if people were to use GenAI. It may also be considered in a much more nuanced, detailed way; that is, for a particular use in a particular way at a particular time by a particular person, is it preferable to use or not use GenAI? </p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">It is an important question to ask given the rapid and pervasive rise of GenAI. Critically investigating the underlying philosophies of human-computer interaction offers a way of meaningfully evaluating GenAI use. Doing so through the lens of the early pioneers is significant because their vision and values set in motion the course of actions that promoted the arrival of the contemporary technological landscape.</p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">This paper’s ethical framework is informed by three important thinkers of the early 1960s: Licklider, in his key role as ARPA (IPTO) director, and his contemporaries Engelbart and Wiener. Licklider described his vision as human-computer “symbiosis” or “partnership,” with Engelbart favoring “synergy.” Nonetheless, both propose a cooperative human-technology interaction that maintains a focus on human responsibility, human creativity, thought, and decision-making. This is echoed in Wiener’s writing, which warns against future uses of technology that would allow machines to lord over the ethical priority of the human.</p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile">The functionalities of Microsoft’s new product Copilot have been employed to provide a concrete illustration enabling the juxtaposition of a modern-day product with its foundation in the pioneering visions for interactive computing. It shows a remarkable alignment with human-computer symbiosis and its potential benefits. In particular, human responsibility, human knowledge, and the value of “the human” represent key dimensions of the analysis. GenAI offers considerable positive potential in each domain, aligning with the ethical stipulations of human-computer symbiosis.</p>
+			<p class="INHALT_Flie-text_Umbruch-jede-Zeile _idGenParaOverride-1">Paradoxically, GenAI may also come to interfere and pose ethical risks to responsibility, knowledge, and the human element. Much like Wiener proposed, it depends on how the technology is used. The analysis demonstrates a written commitment of Microsoft to ethical AI principles, as well as a potential societal shift around the values emphasized by pioneers such as Licklider, Engelbart and Wiener. While it may not be necessary to maintain the exact same values, it is important to note their early cautions. Their philosophy urges us to foreground education on the ethical use of AI—leaving a potential choice not to use it as the preferred ethical choice—and emphasizes the priority and value of human thought, creativity, and responsibility. Together with education, the social responsibility of tech companies and the need for rigorous governance systems have been highlighted in support of successful human-computer symbiosis using GenAI.</p>
+			<h1 class="INHALT_H1-ohne-Nummer">References</h1>
+			<p class="INHALT_Literatur">Abbate, J. (2021) An interview conducted by Janet Abbate for the IEEE History Center, 8 July 2002<span class="CharOverride-3">. </span><span class="Kursiv">Engineering and Technology History Wiki.</span><a href="https://ethw.org/Oral-History:Elizabeth_%22Jake%22_Feinler#Working_for_SRI"><span class="Hyperlink">https://ethw.org/Oral-History:Elizabeth_“Jake“_Feinler#Working_for_SRI</span></a></p>
+			<p class="INHALT_Literatur">Allen, A. L. (2016). “Protecting one’s own privacy in a big data economy.” <span class="Kursiv">Harvard Law Review, 130</span>, 71–78. <a href="https://harvardlawreview.org/2016/12/protecting-ones-own-privacy-in-a-big-data-economy/"><span class="Hyperlink">https://harvardlawreview.org/2016/12/protecting-ones-own-privacy-in-a-big-data-economy/</span></a></p>
+			<p class="INHALT_Literatur">Beatman, A. (2023). Azure OpenAI Service powers the Microsoft Copilot ecosystem. <span class="Kursiv">Microsoft.</span><span class="CharOverride-3"> </span><a href="https://azure.microsoft.com/en-us/blog/azure-openai-service-powers-the-microsoft-copilot-ecosystem/"><span class="Hyperlink">https://azure.microsoft.com/en-us/blog/azure-openai-service-powers-the-microsoft-copilot-ecosystem/</span></a></p>
+			<p class="INHALT_Literatur">Brill, J. C. (2018). Navigating the advent of human-machine teaming. <span class="Kursiv">Proceedings of the Human Factors and Ergonomics Society Annual Meeting, 62</span>(1), 455–459. <a href="https://doi.org/10.1177/1541931218621104"><span class="Hyperlink">https://doi.org/10.1177/1541931218621104</span></a></p>
+			<p class="INHALT_Literatur">Brunello, A., &amp; Croce, D. (2024). A human-centred approach to symbiotic AI: Questioning the ethical and conceptual foundation. <span class="Kursiv">Intelligenza Artificiale, </span><span class="Kursiv">18 </span>(1), 9–20.</p>
+			<p class="INHALT_Literatur">Campbell-K<a id="_idTextAnchor000"></a>elly, M., &amp; Garcia-Swartz, D. (2013). The history of the internet: The missing narratives. <span class="Kursiv">Journal of Information Technology, 28</span>(1), 18–33. <a href="https://doi.org/10.1057/jit.2013.4"><span class="Hyperlink">https://doi.org/10.1057/jit.2013.4</span></a></p>
+			<p class="INHALT_Literatur">Cavanell, Z. (2023). How Microsoft 365 Copilot works. <span class="Kursiv">Microsoft.</span> <a href="https://techcommunity.microsoft.com/t5/microsoft-mechanics-blog/how-microsoft-365-copilot-works/ba-p/3822755"><span class="Hyperlink">https://techcommunity.microsoft.com/t5/microsoft-mechanics-blog/how-microsoft-365-copilot-works/ba-p/3822755</span></a></p>
+			<p class="INHALT_Literatur">Chen, X., Wang, X., &amp; Qu, Y. (2023). Constructing ethical ai based on the “human-in-the-loop” system. <span class="Kursiv">System, 11</span>(11), 1–14. <a href="https://doi.org/10.3390/systems11110548"><span class="Hyperlink">https://doi.org/10.3390/systems11110548</span></a></p>
+			<p class="INHALT_Literatur">Crawford, K. (2024). Generative AI’s environmental costs are soaring —and mostly secret. <span class="Kursiv">Nature, 626,</span> 693<span class="CharOverride-3">.</span> <a href="https://doi.org/10.1038/d41586-024-00478-x"><span class="Hyperlink">https://doi.org/10.1038/d41586-024-00478-x</span></a></p>
+			<p class="INHALT_Literatur">Crocker, S.D. (2019) Learning the Network. <span class="Kursiv">IEEE Annals of the History of Computing, 41</span>(2), 42–47.</p>
+			<p class="INHALT_Literatur">Dehais, F. (2022). Dual passive reactive brain-computer interface: A novel approach to human-machine symbiosis. <span class="Kursiv">Frontiers in Neuroergonomics, 3</span>(824780), 1–12. <a href="https://doi.org/10.3389/fnrgo.2022.824780"><span class="Hyperlink">https://doi.org/10.3389/fnrgo.2022.824780</span></a> </p>
+			<p class="INHALT_Literatur">Engelbart, D. (1962). <span class="Kursiv">Augmenting Human Intellect: A Conceptual Framework. SRI Summary Report AFOSR-3223.</span><span class="CharOverride-3"> </span>Air Force Office of Scientific Research, Washington DC<span class="CharOverride-3">.</span> <a href="https://www.dougengelbart.org/content/view/138/#3"><span class="Hyperlink">https://www.dougengelbart.org/content/view/138/#3</span></a></p>
+			<p class="INHALT_Literatur">Engelbart, D. (1963). A conceptual framework for the augmentation of man’s intellect. In P.W. Howerton and D.C. Weeks (Eds.), <span class="Kursiv">Vistas in Information Handling </span>(pp. 1–29). Spartan Books.</p>
+			<p class="INHALT_Literatur">Engelbart, C. (1986). A lifetime pursuit. <span class="Kursiv">Douglas Engelbart Institute.</span><a href="https://dougengelbart.org/content/view/183/"><span class="Hyperlink">https://dougengelbart.org/content/view/183/</span></a></p>
+			<p class="INHALT_Literatur"><span class="ky2igmncmogjharherah">Fano, R. M. (1998). Joseph Carl Robnett Licklider: March 11, 1915–June 26, 1990. </span><span class="Kursiv">Biographic Memoirs, 75, </span><span class="ky2igmncmogjharherah">190–213.</span></p>
+			<p class="INHALT_Literatur"><span class="ky2igmncmogjharherah">Ferreira, P., Doltsinis, S., &amp; Lohse, N. (2014). Symbiotic assembly systems – A new paradigm. </span><span class="Kursiv">Procedia CIRP, 17,</span><span class="ky2igmncmogjharherah"> 26–31.</span></p>
+			<p class="INHALT_Literatur"><span class="ky2igmncmogjharherah">Flemisch, F. (2016). Shared control is the sharp end of cooperation: Towards a common framework of joint action, shared control and human machine cooperation. </span><span class="Kursiv">IFAC-PapersOnLine, 49</span><span class="ky2igmncmogjharherah">(19), 72–77.</span> <a href="https://doi.org/10.1016/j.ifacol.2016.10.464"><span class="Hyperlink">https://doi.org/10.1016/j.ifacol.2016.10.464</span></a></p>
+			<p class="INHALT_Literatur">Foster, I. (2006). Human-machine symbiosis, 50 years on. In L. Grandinetti (Ed.), <span class="Kursiv">High Performance Computing and Grids in Action - Selected Papers from the 2006 International Advanced Research Workshop on High Performance Computing and Grids, Cetraro, Italy</span> (pp. 3–15). IOS Press. <a href="https://doi.org/10.48550/arXiv.0712.2255"><span class="Hyperlink">https://doi.org/10.48550/arXiv.0712.2255</span></a></p>
+			<p class="INHALT_Literatur">Franzoni, V. (2023). From black box to glass box: Advancing transparency in artificial intelligence systems for ethical and trustworthy AI. In Gervasi, O. et al.<span class="CharOverride-3"> </span>(Eds.) <span class="Kursiv">Computational Science and Its Applications – ICCSA 2023 Workshops. ICCSA 2023. Lecture Notes in Computer Science, </span>14107, np. Springer.</p>
+			<p class="INHALT_Literatur">Hand, D. (2018). Aspects of data ethics in a changing world: Where are we now? <span class="Kursiv">Big Data, 6</span>(3), 176–190. <a href="https://doi.org/10.1089/big.2018.0083"><span class="Hyperlink">https://doi.org/10.1089/big.2018.0083</span></a></p>
+			<p class="INHALT_Literatur"><span class="ky2igmncmogjharherah">Hauben, M., &amp; Hauben, R. (1998). Cybernetics, time-sharing, human-computer symbiosis and online communities: Creating a supercommunity of online communities (Chapter 6). </span><span class="Kursiv">First Monday</span><span class="Kursiv">, 3</span><span class="ky2igmncmogjharherah">(8). </span><a href="https://doi.org/10.5210/fm.v3i8.611"><span class="Hyperlink">https://doi.org/10.5210/fm.v3i8.611</span></a></p>
+			<p class="INHALT_Literatur">Heyder, T., Passlack, N., &amp; Posegga, O. (2023). Ethical management of human-AI interaction: Theory development review. <span class="Kursiv">The Journal of Strategic Information Systems, 32</span>(3), 101772. <a href="https://doi.org/10.1016/j.jsis.2023.101772"><span class="Hyperlink">https://doi.org/10.1016/j.jsis.2023.101772</span></a></p>
+			<p class="INHALT_Literatur"><span class="ky2igmncmogjharherah">Human Rights Watch (2022, May 25). “How dare they peep into my private life?”: Children’s rights violations by governments that endorsed online learning during the Covid-19 Pandemic. </span><a href="https://www.hrw.org/report/2022/05/25/how-dare-they-peep-my-private-life/childrens-rights-violations-government"><span class="Hyperlink">https://www.hrw.org/report/2022/05/25/how-dare-they-peep-my-private-life/childrens-rights-violations-government</span></a></p>
+			<p class="INHALT_Literatur"><span class="ky2igmncmogjharherah">Inga, J., Ruess, M., Robens, J. H., &amp; Nelius, T., et al. (2023). Human-machine symbiosis: A multivariate perspective for physically coupled human-machine systems. </span><span class="Kursiv">International Journal of Human-Computer Studies, 170,</span><span class="ky2igmncmogjharherah"> 102926. </span><a href="https://doi.org/10.1016/j.ijhcs.2022.102926"><span class="Hyperlink">https://doi.org/10.1016/j.ijhcs.2022.102926</span></a></p>
+			<p class="INHALT_Literatur">Joosten, J., Bilgram, V., Hahn, A., &amp; Totzek, D. (2024). Comparing the ideation quality of humans with generative artificial intelligence. <span class="Kursiv">IEEE Engineering Management Review, (early access), 1–10.</span><span class="Emphasis"> </span><a href="https://doi.org/10.1109/EMR.2024.3353338"><span class="Hyperlink">https://doi.org/10.1109/EMR.2024.3353338</span></a></p>
+			<p class="INHALT_Literatur">Kawasaki, M. (2024). A co-thinking collaborative manipulator for solving combinatorial optimization problems. <span class="Kursiv">IEEE/SICE International Symposium on System Integration, </span>Vietnam, January 8–11, 1146–1151, IEEE. <a href="https://doi.org/10.1109/SII58957.2024.10417477"><span class="Hyperlink">https://doi.org/10.1109/SII58957.2024.10417477</span></a><span class="Hyperlink"> </span></p>
+			<p class="INHALT_Literatur">Kita, C.I. (2003). J.C.R. Licklider’s Vision for the IPTO, <span class="CharOverride-3">IEEE Annals of the </span><span class="Kursiv">History of Computing. 25</span>(3), 62–77. </p>
+			<p class="INHALT_Literatur">Köbis, N., &amp; Mossink, L. D. (2021). Artificial intelligence versus Maya Angelou: Experimental evidence that people cannot differentiate AI-generated from human-written poetry, <span class="Kursiv">Computers in Human Behavior, 114</span>(106553), 1–13. <a href="https://doi.org/10.48550/arXiv.2005.09980"><span class="Hyperlink">https://doi.org/10.48550/arXiv.2005.09980</span></a></p>
+			<p class="INHALT_Literatur">Koering, D. (2023). Exploring the Human-AI nexus: A friendly dispute between second-order cybernetical ethical thinking and questions of AI ethics. <span class="Kursiv">Enacting Cybernetics, 1</span>(1), 1–20. <a href="https://doi.org/10.58695/ec.4"><span class="Hyperlink">https://doi.org/10.58695/ec.4</span></a></p>
+			<p class="INHALT_Literatur">Kreps, S., &amp; Kriner, D. (2023). How AI threatens democracy. <span class="Kursiv">Journal of Democracy, 34</span>(4), 122–131.<span class="Hyperlink"> </span><a href="https://www.journalofdemocracy.org/articles/how-ai-threatens-democracy/"><span class="Hyperlink">https://www.journalofdemocracy.org/articles/how-ai-threatens-democracy/</span></a><span class="Hyperlink"> </span></p>
+			<p class="INHALT_Literatur">Licklider, J. C. R. (1960). Man-computer symbiosis. <span class="CharOverride-3">IRE Trans. </span><span class="Kursiv">Human Factors in Electronics, </span>Vol. HFE-1 Mar, reprinted in R. W. Taylor (Ed.), “In Memoriam: J.C.R. Licklider 1915–1990.” </p>
+			<p class="INHALT_Literatur">Licklider, J. C. R. (1965). Man-computer partnership. <span class="Kursiv">International Science and Technology,</span> May, 18–26. Systems Research Center, Palo Alto, California:US.</p>
+			<p class="INHALT_Literatur">Licklider, J. C. R. &amp; Clark, W. E. (1962). On-line man-computer communication. <span class="Kursiv">AIEE-IRE ‚62 (Spring): Proceedings, </span>113–128.</p>
+			<p class="INHALT_Literatur">Longoni, C., Fradkin, A., Cian, L., <a id="_idTextAnchor001"></a>&amp; Pennycook, G. (2022). News from generative artificial intelligence is believed less. <span class="Kursiv">Proceedings of the 2022 ACM Conference on Fairness, Accountability, and Transparency (FAccT ‘22) </span>(pp. 97–106). Association for Computing Machinery. <a href="https://doi.org/10.1145/3531146.3533077"><span class="Hyperlink">https://doi.org/10.1145/3531146.3533077</span></a><span class="Hyperlink"> </span></p>
+			<p class="INHALT_Literatur">Lyon, D. (2022). Beyond big data surveillance: Freedom and fairness<span class="CharOverride-3">. </span><span class="Kursiv">Surveillance Studies Center.</span> <a href="https://www.surveillance-studies.ca/sites/sscqueens.org/files/bds_report_eng-2022-05-17.pdf"><span class="Hyperlink">https://www.surveillance-studies.ca/sites/sscqueens.org/files/bds_report_eng-2022-05-17.pdf</span></a></p>
+			<p class="INHALT_Literatur">Microsoft (2022). <span class="Kursiv">Microsoft Responsible AI Standard, v2: General Requirements.</span> <a href="https://www.microsoft.com/en-us/ai/principles-and-approach"><span class="Hyperlink">https://www.microsoft.com/en-us/ai/principles-and-approach</span></a> </p>
+			<p class="INHALT_Literatur">Microsoft (2023). <span class="Kursiv">Microsoft 365 Copilot: The art and science of prompting. </span><a href="https://adoption.microsoft.com/files/copilot/Prompt-ingredients-one-pager.pdf"><span class="Hyperlink">https://adoption.microsoft.com/files/copilot/Prompt-ingredients-one-pager.pdf</span></a> </p>
+			<p class="INHALT_Literatur">Microsoft (2023b). <span class="Kursiv">What Can Copilot’s Earliest Users Teach Us About Generative AI at Work?</span> <a href="https://assets-c4akfrf5b4d3f4b7.z01.azurefd.net/assets/2023/11/Microsoft_Work_Trend_Index_Special_Report_2023_Full_Report.pdf"><span class="Hyperlink">https://assets-c4akfrf5b4d3f4b7.z01.azurefd.net/assets/2023/11/Microsoft_Work_Trend_Index_Special_Report_2023_Full_Report.pdf</span></a><span class="Hyperlink"> </span></p>
+			<p class="INHALT_Literatur">Microsoft (2024a). <span class="Kursiv">Frequently Asked Questions.</span> <a href="https://www.microsoft.com/en-gb/bing?form=MA13FV"><span class="Hyperlink">https://www.microsoft.com/en-gb/bing?form=MA13FV</span></a><span class="Hyperlink"> </span></p>
+			<p class="INHALT_Literatur">Microsoft (2024b). <span class="Kursiv">Meet Microsoft Copilot.</span> [Video.] <a href="https://www.microsoft.com/en-gb/videoplayer/embed/RW1gt0F?pid=ocpVideo1&amp;postJsllMsg=true&amp;maskLevel=20&amp;reporting=true&amp;market=en-gb"><span class="Hyperlink">https://www.microsoft.com/en-gb/videoplayer/embed/RW1gt0F?pid=ocpVideo1&amp;postJsllMsg=true&amp;maskLevel=20&amp;reporting=true&amp;market=en-gb</span></a> </p>
+			<p class="INHALT_Literatur">Microsoft (2024c). <span class="Kursiv">Empower your workforce with Copilot for Microsoft 365: HR Use Case.</span> <a href="https://learn.microsoft.com/en-us/training/modules/empower-workforce-copilot-hr/"><span class="Hyperlink">https://learn.microsoft.com/en-us/training/modules/empower-workforce-copilot-hr/</span></a> </p>
+			<p class="INHALT_Literatur">Muchmore, M. (2024, February 13). What is Copilot? Microsoft’s AI assistant explained. <span class="Kursiv">PCmag.</span> <a href="https://www.pcmag.com/explainers/what-is-microsoft-copilot"><span class="Hyperlink">https://www.pcmag.com/explainers/what-is-microsoft-copilot</span></a> </p>
+			<p class="INHALT_Literatur">Nelson, C. A., Kovarik, C. L. &amp; Barbieri, J. S. (2018). Human-computer symbiosis: Enhancing dermatologic care while preserving the art of healing. <span class="Kursiv">International Journal of Dermatology, 57</span>(8), 1015–1016. <a href="https://doi.org/10.1111/ijd.14071"><span class="Hyperlink">https://doi.org/10.1111/ijd.14071</span></a> </p>
+			<p class="INHALT_Literatur">OECD - Organisation for Economic Co-operation and Development (2024). <span class="Kursiv">OECD AI Principles overview.</span> <a href="https://oecd.ai/en/ai-principles"><span class="Hyperlink">https://oecd.ai/en/ai-principles</span></a> </p>
+			<p class="INHALT_Literatur">O’Hagan, C. (2024). Generative AI: UNESCO study reveals alarming evidence of regressive gender stereotypes<span class="CharOverride-3">.</span> <span class="Kursiv">UNESCO.</span><span class="CharOverride-3"> </span><a href="https://www.unesco.org/en/articles/generative-ai-unesco-study-reveals-alarming-evidence-regressive-gender-stereotypes"><span class="Hyperlink">https://www.unesco.org/en/articles/generative-ai-unesco-study-reveals-alarming-evidence-regressive-gender-stereotypes</span></a></p>
+			<p class="INHALT_Literatur">O’Neill, J. E. (1995). The role of ARPA in the development of the ARPANET, 1961–1972. <span class="Kursiv">IEEE Annals of the History of Computing, 17</span>(4), 76–81. <a href="https://doi.org/10.1109/85.477437"><span class="Hyperlink">https://doi.org/10.1109/85.477437</span></a><span class="Hyperlink"> </span></p>
+			<p class="INHALT_Literatur">Rane, N. (2023). Roles and challenges of ChatGPT and similar generative artificial intelligence for achieving the sustainable development goals (SDGs). <span class="Kursiv">SSRN,</span> 1–14ST. <a href="http://dx.doi.org/10.2139/ssrn.4603244"><span class="Hyperlink">http://dx.doi.org/10.2139/ssrn.4603244</span></a> </p>
+			<p class="INHALT_Literatur">Sharma, A. (2024). 11 Best Generative AI Tools and Platforms, <span class="Kursiv">Turing</span>, <a href="https://www.turing.com/resources/generative-ai-tools"><span class="Hyperlink">https://www.turing.com/resources/generative-ai-tools</span></a><span class="Hyperlink"> </span></p>
+			<p class="INHALT_Literatur">Strawn, G. (2014). Masterminds of the ARPAnet. <span class="Kursiv">IT Professional: IEEE, 16</span>(3), 66–68.</p>
+			<p class="INHALT_Literatur">Su, Y. (2023). Generative AI and human knowledge sharing: Evidence from a natural experiment. <span class="Kursiv">SSRN</span>, 1–40. <a href="http://dx.doi.org/10.2139/ssrn.4628786"><span class="Hyperlink">http://dx.doi.org/10.2139/ssrn.4628786</span></a> </p>
+			<p class="INHALT_Literatur">Stinson, C. (2022). Algorithms are not neutral. <span class="Kursiv">AI Ethics, 2,</span> 763–770. <a href="https://doi.org/10.1007/s43681-022-00136-w"><span class="Hyperlink">https://doi.org/10.1007/s43681-022-00136-w</span></a><span class="Hyperlink"> </span></p>
+			<p class="INHALT_Literatur"><span class="c-bibliographic-information__value">Terveen, L. G. (1995). Overview of human-computer collaboration. </span><span class="Kursiv">Knowledge-Based Systems, </span><span class="Kursiv">8 </span><span class="c-bibliographic-information__value">(2–3), 67–81. </span><a href="https://doi.org/10.1016/0950-7051(95)98369-H"><span class="Hyperlink" lang="en-GB">https://doi.org/10.1016/0950-7051(95)98369-H</span></a></p>
+			<p class="INHALT_Literatur">Tilmes, N. (2022). Disability, fairness, and algorithmic bias in AI recruitment. <span class="Kursiv">Ethics and Information Technology, 24,</span> 21. <a href="https://doi.org/10.1007/s10676-022-09633-2"><span class="Hyperlink">https://doi.org/10.1007/s10676-022-09633-2</span></a><span class="Hyperlink"> </span></p>
+			<p class="INHALT_Literatur">Tschandl, P. (2020). Human–computer collaboration for skin cancer recognition. <span class="Kursiv">Nature Medicine, </span><span class="CharOverride-3">26 </span>, 1229–1234.</p>
+			<p class="INHALT_Literatur">Waldrop, M. (2001). <span class="Kursiv">The Dream Machine: J.C.R. Licklider and the Revolution.</span> Viking.</p>
+			<p class="INHALT_Literatur">Webster, J. (2019, October 29). J.C.R. Licklider — The early computing visionary you’ve probably never heard of. <span class="Kursiv">Forbes</span>. <a href="https://www.forbes.com/sites/johnwebster/2019/10/29/jcr-licklider--the-early-computing-visionary-youve-probably-never-heard-of/"><span class="Hyperlink">https://www.forbes.com/sites/johnwebster/2019/10/29/jcr-licklider--the-early-computing-visionary-youve-probably-never-heard-of/</span></a> </p>
+			<p class="INHALT_Literatur">Wiener, N. (1961). <span class="Kursiv">Cybernetics or, Control and Communication in the Animal and the Machine.</span> MIT Press. <a href="https://doi.org/10.7551/mitpress/11810.001.0001"><span class="Hyperlink">https://doi.org/10.7551/mitpress/11810.001.0001</span></a></p>
+			<p class="INHALT_Literatur">Wiener, N. (1964). <span class="Kursiv">God &amp; Golem, Inc. A Comment on Certain Points where Cybernetics Impinges on Religion.</span> MIT Press. <a href="https://doi.org/10.7551/mitpress/3316.001.0001"><span class="Hyperlink">https://doi.org/10.7551/mitpress/3316.001.0001</span></a> </p>
+			<p class="INHALT_Literatur">Zhou, L., Paul, S., Demirkan, H., Yuan, L., Spohrer, J., Zhou, M., &amp; Basu, J. (2021). Intelligence augmentation: Towards building human-machine symbiotic relationship. <span class="Kursiv">AIS Transactions on Human-Computer Interaction, 13</span>(2), 243–264. <a href="https://doi.org/10.17705/1thci.00149"><span class="Hyperlink">https://doi.org/10.17705/1thci.00149</span></a> </p>
+			<p class="INHALT_Literatur">Zuboff, S. (2015). Big other: Surveillance capitalism and the prospects of an information civilization. <span class="Kursiv">Journal of Information Technology, 30</span>(1), 75–89. <a href="https://doi.org/10.1057/jit.2015.5"><span class="Hyperlink">https://doi.org/10.1057/jit.2015.5</span></a> </p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen ParaOverride-1"><span class="CharOverride-4">Date received</span>: April 2024</p>
+			<p class="INHALT_Flie-text_2-Zeilen-nicht-trennen"><span class="CharOverride-4">Date accepted</span>: September 2024</p>
+		
+	
+			</div>
+
+															
+			
+<div class="item downloads_chart">
+	<h3 class="label">
+		Metrics
+	</h3>
+	<div id="paperbuzz"><div id="loading">Metrics Loading ...</div></div>
+	<script type="text/javascript">
+		window.onload = function () {
+			var options = {
+				paperbuzzStatsJson: JSON.parse('{\"altmetrics_sources\":[{\"events\":null,\"events_count\":651,\"events_count_by_day\":[{\"count\":24,\"date\":\"2024-12-05\"},{\"count\":5,\"date\":\"2024-12-06\"},{\"count\":3,\"date\":\"2024-12-07\"},{\"count\":3,\"date\":\"2024-12-08\"},{\"count\":2,\"date\":\"2024-12-09\"},{\"count\":6,\"date\":\"2024-12-10\"},{\"count\":6,\"date\":\"2024-12-11\"},{\"count\":8,\"date\":\"2024-12-12\"},{\"count\":4,\"date\":\"2024-12-13\"},{\"count\":9,\"date\":\"2024-12-14\"},{\"count\":1,\"date\":\"2024-12-15\"},{\"count\":5,\"date\":\"2024-12-16\"},{\"count\":3,\"date\":\"2024-12-17\"},{\"count\":5,\"date\":\"2024-12-18\"},{\"count\":22,\"date\":\"2024-12-19\"},{\"count\":12,\"date\":\"2024-12-20\"},{\"count\":1,\"date\":\"2024-12-21\"},{\"count\":2,\"date\":\"2024-12-22\"},{\"count\":3,\"date\":\"2024-12-23\"},{\"count\":3,\"date\":\"2024-12-24\"},{\"count\":1,\"date\":\"2024-12-25\"},{\"count\":1,\"date\":\"2024-12-26\"},{\"count\":4,\"date\":\"2024-12-27\"},{\"count\":2,\"date\":\"2024-12-29\"},{\"count\":1,\"date\":\"2024-12-31\"},{\"count\":5,\"date\":\"2025-01-02\"},{\"count\":4,\"date\":\"2025-01-03\"},{\"count\":2,\"date\":\"2025-01-04\"}],\"events_count_by_month\":[{\"count\":136,\"date\":\"2024-12\"},{\"count\":61,\"date\":\"2025-01\"},{\"count\":65,\"date\":\"2025-02\"},{\"count\":62,\"date\":\"2025-03\"},{\"count\":70,\"date\":\"2025-04\"},{\"count\":24,\"date\":\"2025-05\"},{\"count\":31,\"date\":\"2025-06\"},{\"count\":31,\"date\":\"2025-07\"},{\"count\":19,\"date\":\"2025-08\"},{\"count\":27,\"date\":\"2025-09\"},{\"count\":46,\"date\":\"2025-10\"},{\"count\":29,\"date\":\"2025-11\"},{\"count\":17,\"date\":\"2025-12\"},{\"count\":22,\"date\":\"2026-01\"},{\"count\":11,\"date\":\"2026-02\"}],\"events_count_by_year\":[{\"count\":136,\"date\":null},{\"count\":482,\"date\":null},{\"count\":33,\"date\":null}],\"source\":{\"display_name\":\"PDF views\"},\"source_id\":\"pdf\"},{\"events\":null,\"events_count\":426,\"events_count_by_day\":[],\"events_count_by_month\":[{\"count\":67,\"date\":\"2025-10\"},{\"count\":113,\"date\":\"2025-11\"},{\"count\":108,\"date\":\"2025-12\"},{\"count\":109,\"date\":\"2026-01\"},{\"count\":29,\"date\":\"2026-02\"}],\"events_count_by_year\":[{\"count\":288,\"date\":null},{\"count\":138,\"date\":null}],\"source\":{\"display_name\":\"HTML views\"},\"source_id\":\"html\"}]}'),
+				minItemsToShowGraph: {
+					minEventsForYearly: 10,
+					minEventsForMonthly: 10,
+					minEventsForDaily: 6,
+					minYearsForYearly: 3,
+					minMonthsForMonthly: 2,
+					minDaysForDaily: 1 //first 30 days only
+				},
+				graphheight: 150,
+				graphwidth: 300,
+				showTitle: false,
+				showMini: true,
+								published_date: [2024, 12, 5],
+							}
+
+			var paperbuzzviz = undefined;
+			paperbuzzviz = new PaperbuzzViz(options);
+			paperbuzzviz.initViz();
+		}
+	</script>
+</div>
+
+																			
+						
+		</div><!-- .main_entry -->
+
+		<div class="entry_details">
+
+						<div class="item backlink">
+				<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/article/view/179"><span
+						class="fa fa-arrow-left"></span>Back to summary</a>
+			</div>
+
+						
+										<div class="item galleys">
+					<h2 class="pkp_screen_reader">
+						Downloads
+					</h2>
+					<ul class="value galleys_links">
+																					<li>
+									
+	
+							
+
+<a class="obj_galley_link pdf" href="https://ojs.weizenbaum-institut.de/index.php/wjds/article/view/5_1_2/5_1_2">
+
+		
+	PDF
+
+	</a>
+								</li>
+																															</ul>
+				</div>
+						
+							<div class="item published">
+					<section class="sub_item">
+						<h2 class="label">
+							Published
+						</h2>
+						<div class="value">
+							<span>05-12-2024</span>
+						</div>
+					</section>
+				</div>
+			
+						
+										<div class="item issue">
+
+											<section class="sub_item">
+							<h2 class="label">
+								Issue
+							</h2>
+							<div class="value">
+								<a class="title" href="https://ojs.weizenbaum-institut.de/index.php/wjds/issue/view/5_1">
+									Vol. 5 No. 1 (2025)
+								</a>
+							</div>
+						</section>
+					
+											<section class="sub_item">
+							<h2 class="label">
+								Section
+							</h2>
+							<div class="value">
+								Research Papers
+							</div>
+						</section>
+					
+									</div>
+			
+																														
+										<div class="item copyright">
+					<h2 class="label">
+						License
+					</h2>
+																										<p>Copyright (c) 2024 Caroline Stockman (Author)
+								</p>
+														<a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" src="//i.creativecommons.org/l/by/4.0/88x31.png" /></a><p>This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+																
+				</div>
+			
+			<div class="item citations-container" data-image-path="https://ojs.weizenbaum-institut.de/plugins/generic/citations/images/" data-citations-url="https://ojs.weizenbaum-institut.de/index.php/wjds/citations/get?citationsId=10.34669%2Fwi.wjds%2F5.1.2&amp;citationsShowList=1&amp;citationsProvider=scopus"
+     data-citations-provider="scopus" data-citations-total="1" data-citations-list="1"
+     data-show-google="1" data-show-pmc="0">
+	<div id="citations-loader"></div>
+	<div class="citations-count">
+		<div class="citations-count-crossref">
+			<img class="img-fluid" src="https://ojs.weizenbaum-institut.de/plugins/generic/citations/images/crossref.png" alt="Crossref"/>
+			<div class="badge_total"></div>
+		</div>
+		<div class="citations-count-scopus">
+			<img src="https://ojs.weizenbaum-institut.de/plugins/generic/citations/images/scopus.png" alt="Scopus"/>
+			<br/>
+			<span class="badge_total"></span>
+		</div>
+		<div class="citations-count-google">
+			<a href="https://scholar.google.com/scholar?q=10.34669/wi.wjds/5.1.2" target="_blank" rel="noreferrer">
+				<img src="https://ojs.weizenbaum-institut.de/plugins/generic/citations/images/scholar.png" alt="Google Scholar"/>
+			</a>
+		</div>
+		<div class="citations-count-pmc">
+			<a href="http://europepmc.org/search?scope=fulltext&query=(REF:10.34669/wi.wjds/5.1.2)" target="_blank" rel="noreferrer">
+				<img src="https://ojs.weizenbaum-institut.de/plugins/generic/citations/images/pmc.png" alt="Europe PMC"/>
+				<br/>
+				<span class="badge_total"></span>
+			</a>
+		</div>
+	</div>
+	<div class="citations-list"></div>
+    </div>
+
+
+		</div><!-- .entry_details -->
+	</div><!-- .row -->
+
+</article>
+
+	</div><!-- pkp_structure_main -->
+
+		</div><!-- pkp_structure_content -->
+
+<div class="pkp_structure_footer_wrapper" role="contentinfo">
+	<a id="pkp_content_footer"></a>
+
+	<div class="pkp_structure_footer">
+
+					<div class="pkp_footer_content">
+				<hr />
+<p class="wzb-textsection__copy">The Weizenbaum Journal of the Digital Society is published by the Weizenbaum Institute. It is indexed in <a href="https://www.scopus.com/sources.uri?zone=TopNavBar&amp;origin=searchbasic">Scopus</a> and the <a href="https://doaj.org/toc/2748-5625">Directory of Open Access Journals (DOAJ)</a>.</p>
+<p class="wzb-textsection__copy">ISSN: <a href="https://portal.issn.org/resource/ISSN/2748-5625"><span class="resourceDetailTableCellValue">2748-</span><span class="resourceDetailTableCellValue">5625</span></a></p>
+<p class="wzb-textsection__copy"><span class="resourceDetailTableCellValue">Managing Editor: Martin Emmer</span></p>
+<p class="wzb-textsection__copy"><span class="resourceDetailTableCellValue">Contact: wjds[at]weizenbaum-institut.de<br /></span></p>
+<p><a href="https://ojs.weizenbaum-institut.de/index.php/wjds/legalnotice"><strong>Legal notice</strong></a></p>
+<p><a href="https://ojs.weizenbaum-institut.de/index.php/wjds/about/privacy"><strong>Privacy Statement</strong></a></p>
+<hr />
+<p>The Weizenbaum Institute is funded by the German Federal Ministry of Research, Technology and Space (BMFTR)</p>
+			</div>
+		
+		<div class="pkp_brand_footer" role="complementary">
+			<a href="https://ojs.weizenbaum-institut.de/index.php/wjds/about/aboutThisPublishingSystem">
+				<img alt="More information about the publishing system, Platform and Workflow by OJS/PKP." src="https://ojs.weizenbaum-institut.de/templates/images/ojs_brand.png">
+			</a>
+		</div>
+	</div>
+</div><!-- pkp_structure_footer_wrapper -->
+
+</div><!-- pkp_structure_page -->
+
+<script src="https://ojs.weizenbaum-institut.de/lib/pkp/lib/vendor/components/jquery/jquery.min.js?v=3.3.0.22" type="text/javascript"></script><script src="https://ojs.weizenbaum-institut.de/lib/pkp/lib/vendor/components/jqueryui/jquery-ui.min.js?v=3.3.0.22" type="text/javascript"></script><script src="https://ojs.weizenbaum-institut.de/plugins/themes/default/js/lib/popper/popper.js?v=3.3.0.22" type="text/javascript"></script><script src="https://ojs.weizenbaum-institut.de/plugins/themes/default/js/lib/bootstrap/util.js?v=3.3.0.22" type="text/javascript"></script><script src="https://ojs.weizenbaum-institut.de/plugins/themes/default/js/lib/bootstrap/dropdown.js?v=3.3.0.22" type="text/javascript"></script><script src="https://ojs.weizenbaum-institut.de/plugins/themes/default/js/main.js?v=3.3.0.22" type="text/javascript"></script><script src="https://d3js.org/d3.v4.min.js?v=3.3.0.22" type="text/javascript"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.min.js?v=3.3.0.22" type="text/javascript"></script><script src="https://ojs.weizenbaum-institut.de/plugins/generic/paperbuzz/paperbuzzviz/paperbuzzviz.js?v=3.3.0.22" type="text/javascript"></script><script src="https://ojs.weizenbaum-institut.de/plugins/generic/citations/js/citations.js?v=3.3.0.22" type="text/javascript"></script>
+
+
+</body>
+</html>
