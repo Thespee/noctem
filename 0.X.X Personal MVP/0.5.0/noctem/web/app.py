@@ -13,6 +13,17 @@ from ..services.ics_import import (
     get_saved_urls, save_url, remove_url, refresh_all_urls, refresh_url
 )
 
+# Common timezones for settings dropdown
+COMMON_TIMEZONES = [
+    "America/Vancouver", "America/Los_Angeles", "America/Denver", 
+    "America/Chicago", "America/New_York", "America/Toronto",
+    "America/Sao_Paulo", "Europe/London", "Europe/Paris", 
+    "Europe/Berlin", "Europe/Moscow", "Asia/Dubai",
+    "Asia/Kolkata", "Asia/Singapore", "Asia/Tokyo",
+    "Asia/Shanghai", "Australia/Sydney", "Pacific/Auckland",
+    "UTC"
+]
+
 
 def create_app() -> Flask:
     """Create and configure the Flask application."""
@@ -206,6 +217,70 @@ def create_app() -> Flask:
         count = clear_ics_events()
         flash(f"Cleared {count} calendar events", 'success')
         return redirect(url_for('calendar_upload'))
+    
+    @app.route("/settings", methods=["GET", "POST"])
+    def settings():
+        """Settings page for configuring Noctem."""
+        if request.method == "POST":
+            # Save all config values
+            fields = [
+                'telegram_bot_token', 'telegram_chat_id', 'timezone',
+                'morning_message_time', 'web_host', 'web_port'
+            ]
+            for field in fields:
+                value = request.form.get(field, '').strip()
+                if field == 'web_port':
+                    try:
+                        value = int(value) if value else 5000
+                    except ValueError:
+                        value = 5000
+                if value or field in ['telegram_bot_token', 'telegram_chat_id']:
+                    Config.set(field, value)
+            
+            Config.clear_cache()
+            flash('Settings saved successfully!', 'success')
+            return redirect(url_for('settings'))
+        
+        # GET - show settings form
+        config = Config.get_all()
+        return render_template(
+            "settings.html",
+            config=config,
+            timezones=COMMON_TIMEZONES,
+        )
+    
+    @app.route("/settings/test", methods=["POST"])
+    def settings_test():
+        """Send a test message to Telegram."""
+        import requests as http_requests
+        
+        token = Config.telegram_token()
+        chat_id = Config.telegram_chat_id()
+        
+        if not token:
+            flash('Telegram bot token not set!', 'error')
+            return redirect(url_for('settings'))
+        
+        if not chat_id:
+            flash('Telegram chat ID not set! Send /start to your bot first.', 'error')
+            return redirect(url_for('settings'))
+        
+        try:
+            url = f"https://api.telegram.org/bot{token}/sendMessage"
+            response = http_requests.post(url, json={
+                'chat_id': chat_id,
+                'text': '✅ Noctem test message - connection working!',
+            }, timeout=10)
+            
+            if response.ok:
+                flash('Test message sent successfully! Check Telegram.', 'success')
+            else:
+                error = response.json().get('description', 'Unknown error')
+                flash(f'Telegram API error: {error}', 'error')
+        except Exception as e:
+            flash(f'Connection error: {str(e)}', 'error')
+        
+        return redirect(url_for('settings'))
     
     return app
 
