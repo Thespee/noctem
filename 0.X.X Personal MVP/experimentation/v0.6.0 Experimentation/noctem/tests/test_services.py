@@ -65,13 +65,13 @@ class TestTaskService:
     def test_get_priority_tasks(self):
         from ..services import task_service
         
-        task_service.create_task("High importance", due_date=date.today(), importance=1.0)
-        task_service.create_task("Low importance", due_date=date.today(), importance=0.0)
+        task_service.create_task("High priority", due_date=date.today(), priority=1)
+        task_service.create_task("Low priority", due_date=date.today(), priority=4)
         
         priority_tasks = task_service.get_priority_tasks(5)
         assert len(priority_tasks) >= 1
-        # Higher importance (1.0) should come first
-        assert priority_tasks[0].importance == 1.0
+        # Higher priority (lower number) should come first
+        assert priority_tasks[0].priority == 1
 
 
 class TestHabitService:
@@ -157,7 +157,7 @@ class TestBriefing:
         from ..services import task_service
         from ..services.briefing import generate_morning_briefing
         
-        task_service.create_task("Important task", due_date=date.today(), importance=1.0)
+        task_service.create_task("Important task", due_date=date.today(), priority=1)
         
         briefing = generate_morning_briefing()
         assert "Good morning" in briefing

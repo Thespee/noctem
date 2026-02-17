@@ -5,7 +5,7 @@ import pytest
 from datetime import date, time, timedelta
 
 from ..parser.natural_date import parse_date, parse_time, parse_recurrence, parse_datetime
-from ..parser.task_parser import parse_task, parse_importance, parse_tags, parse_project
+from ..parser.task_parser import parse_task, parse_priority, parse_tags, parse_project
 from ..parser.command import parse_command, CommandType
 
 
@@ -96,22 +96,18 @@ class TestRecurrenceParsing:
         assert "BYMONTHDAY=1" in parsed
 
 
-class TestImportanceParsing:
-    def test_exclamation_importance_high(self):
-        importance, remaining = parse_importance("important task !1")
-        assert importance == 1.0  # High importance
+class TestPriorityParsing:
+    def test_exclamation_priority(self):
+        priority, remaining = parse_priority("important task !1")
+        assert priority == 1
     
-    def test_exclamation_importance_medium(self):
-        importance, remaining = parse_importance("task !2")
-        assert importance == 0.5  # Medium importance
+    def test_p_priority(self):
+        priority, remaining = parse_priority("task p2")
+        assert priority == 2
     
-    def test_exclamation_importance_low(self):
-        importance, remaining = parse_importance("task !3")
-        assert importance == 0.0  # Low importance
-    
-    def test_no_importance(self):
-        importance, remaining = parse_importance("normal task")
-        assert importance is None
+    def test_no_priority(self):
+        priority, remaining = parse_priority("normal task")
+        assert priority is None
 
 
 class TestTagParsing:
@@ -155,7 +151,7 @@ class TestFullTaskParsing:
         assert parsed.due_date.month == 2
         assert parsed.due_date.day == 20
         assert parsed.due_time == time(15, 0)
-        assert parsed.importance == 1.0  # High importance
+        assert parsed.priority == 1
         assert "work" in parsed.tags
         assert parsed.project_name == "project"
     

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="30">
+    <title>Clarifications - Noctem</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>❓ Clarifications</h1>
+            <p class="subtitle">Help the AI understand your tasks better</p>
+        </header>
+
+        <main>
+            {% if clarifications %}
+            <section class="clarifications">
+                {% for c in clarifications %}
+                <div class="clarification-card">
+                    <div class="clarification-question">
+                        <h3>{{ c.question }}</h3>
+                        <p class="task-ref">For task: <strong>{{ c.task_name }}</strong></p>
+                    </div>
+                    
+                    <form action="/clarifications/respond/{{ c.id }}" method="POST" class="clarification-form">
+                        {% if c.options %}
+                        <div class="options-grid">
+                            {% for option in c.options %}
+                            <label class="option-btn">
+                                <input type="radio" name="response" value="{{ option }}" required>
+                                <span>{{ option }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="custom-response">
+                            <input type="text" name="custom_response" placeholder="Or type a custom answer...">
+                        </div>
+                        
+                        <div class="clarification-actions">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" formaction="/clarifications/skip/{{ c.id }}" class="btn btn-secondary">Skip</button>
+                        </div>
+                    </form>
+                </div>
+                {% endfor %}
+            </section>
+            {% else %}
+            <section class="empty-state">
+                <h2>No clarifications needed</h2>
+                <p>All your tasks are clear! The AI doesn't need any additional information right now.</p>
+                <p>When you add vague or unclear tasks, clarification questions will appear here.</p>
+            </section>
+            {% endif %}
+        </main>
+
+        <footer>
+            <p><a href="/">← Dashboard</a> • <a href="/breakdowns">🤖 Breakdowns</a> • <a href="/settings">⚙️ Settings</a></p>
+        </footer>
+    </div>
+</body>
+</html>
