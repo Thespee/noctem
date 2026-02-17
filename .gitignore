@@ -1,35 +1,41 @@
+# Personal / local-only data
+personal-data/
+
+# Runtime data inside the repo (keep structure, ignore contents)
+**/noctem/data/**
+!**/noctem/data/.gitkeep
+
 # Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-venv/
-ENV/
-.venv/
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/*.so
+**/.Python
+**/venv/
+**/.venv/
+**/ENV/
 
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# Data files (keep structure, ignore content)
-*.db
-*.log
-data/logs/*
-!data/logs/.gitkeep
+# IDE / editor
+**/.idea/
+**/.vscode/
+**/.obsidian/
+**/*.swp
+**/*.swo
 
 # Test artifacts
-.pytest_cache/
-.coverage
-htmlcov/
+**/.pytest_cache/
+**/.coverage
+**/htmlcov/
 
 # OS
 .DS_Store
 Thumbs.db
 
+# Local runtime data (if kept inside the repo)
+**/*.db
+**/*.log
+
 # Build artifacts
 *.iso
-dist/
-build/
+**/dist/
+**/build/
