@@ -1,4 +1,4 @@
-# Noctem v0.7.0
+# Noctem v0.8.0
 
 A self-hosted executive assistant system for task management, voice journaling, and AI-assisted daily organization.
 
@@ -15,6 +15,7 @@ A self-hosted executive assistant system for task management, voice journaling, 
 - **Self-Improvement Engine** - Learns from patterns, generates insights, creates learned rules
 - **Model Registry** - Dynamic local model discovery (Ollama) with benchmarking
 - **Maintenance Scanner** - System health checks and actionable recommendations
+- **Skills Infrastructure** - Extensible skill system with triggers, approval workflow, and execution logging
 
 ## Quick Start
 
@@ -67,7 +68,31 @@ Then access `http://<tailscale-ip>:5000` from any device on your Tailscale netwo
 
 **Telegram command:** `/access` sends you the remote URL directly.
 
-## v0.7.0 New Features
+## v0.8.0 New Features: Skills Infrastructure
+
+```bash
+# Skills: Extensible system for packaged knowledge + procedures
+# - SKILL.yaml metadata + instructions.md format
+# - RapidFuzz pattern matching for triggers
+# - Approval workflow for sensitive skills
+# - Full execution logging
+
+# CLI skill commands
+noctem skill list               # List all installed skills
+noctem skill info <name>        # Show skill details
+noctem skill run <name> [input] # Execute a skill
+noctem skill enable <name>      # Enable a skill
+noctem skill disable <name>     # Disable a skill
+noctem skill create <name>      # Scaffold a new skill
+noctem skill validate <path>    # Validate SKILL.yaml
+
+# Telegram skill commands
+/skill list                     # List enabled skills
+/skill info <name>              # Show skill details  
+/skill run <name> [input]       # Execute a skill
+```
+
+## v0.7.0 Features: Self-Improvement
 
 ```bash
 # Self-improvement: pattern detection and learning
@@ -92,12 +117,18 @@ noctem maintenance preview   # Preview Butler report
 ```
 noctem/
 ├── main.py           # Entry point
-├── cli.py            # Interactive CLI + /summon
-├── db.py             # SQLite database (11 tables)
-├── models.py         # Data models (15 dataclasses)
+├── cli.py            # Interactive CLI + /summon + skill commands
+├── db.py             # SQLite database (13 tables)
+├── models.py         # Data models (19 dataclasses)
 ├── config.py         # Configuration
 ├── parser/           # Natural language parsing
 ├── services/         # Business logic (tasks, suggestions, prompts)
+├── skills/           # Skills infrastructure
+│   ├── loader.py     # YAML parsing, validation
+│   ├── registry.py   # Discovery, CRUD, stats
+│   ├── trigger.py    # Pattern matching (RapidFuzz)
+│   ├── executor.py   # Execution flow, approval workflow
+│   └── service.py    # High-level API
 ├── fast/             # Fast path: classifier, capture, voice cleanup
 ├── slow/             # Slow path: LLM analysis, model registry
 ├── butler/           # Butler protocol, summon handler, clarifications
@@ -108,16 +139,16 @@ noctem/
 ├── web/              # Flask dashboard + templates
 └── data/
     ├── noctem.db     # SQLite database
+    ├── skills/       # User-created skills
     └── voice_journals/  # Audio files
 ```
 
 ## Documentation
 
-- [docs/USER_GUIDE_v0.7.0.md](docs/USER_GUIDE_v0.7.0.md) - User guide with all features
+- [docs/USER_GUIDE_v0.8.0.md](docs/USER_GUIDE_v0.8.0.md) - User guide with all features
 - [docs/improvements.md](docs/improvements.md) - Design notes, roadmap, learnings
 - [docs/Ideals_v0.7.0.md](docs/Ideals_v0.7.0.md) - Aspirational vision and philosophy
 - [docs/discussion_v0.7.0.md](docs/discussion_v0.7.0.md) - Critical analysis and technical review
-- [V0.7.0_COMPLETION_REPORT.md](V0.7.0_COMPLETION_REPORT.md) - Implementation completion report
 - [SETUP.md](SETUP.md) - Detailed setup guide
 - [COMMANDS.md](COMMANDS.md) - All commands reference
 

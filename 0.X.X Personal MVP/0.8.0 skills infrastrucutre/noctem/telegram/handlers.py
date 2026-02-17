@@ -93,7 +93,12 @@ Examples:
 
 **Settings:**
 • /settings - View/change config
-• /access - Remote access URL (Tailscale)"""
+• /access - Remote access URL (Tailscale)
+
+**Skills (v0.8.0):**
+• /skill - List skills
+• /skill info <name> - Skill details
+• /skill run <name> - Run a skill"""
     await update.message.reply_text(msg, parse_mode="Markdown")
 
 
@@ -347,6 +352,129 @@ async def cmd_update(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     response = start_update_mode(count)
     await update.message.reply_text(response)
+
+
+async def cmd_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Handle /skill command - v0.8.0 Skills Infrastructure.
+    
+    Usage:
+        /skill              - List all skills
+        /skill list         - List all skills
+        /skill info <name>  - Show skill details
+        /skill run <name>   - Run a skill
+        /skill enable <name>  - Enable a skill
+        /skill disable <name> - Disable a skill
+    """
+    from ..skills.service import get_skill_service
+    
+    service = get_skill_service()
+    if not service._initialized:
+        service.initialize()
+    
+    # Parse subcommand and args
+    subcommand = context.args[0].lower() if context.args else "list"
+    skill_arg = " ".join(context.args[1:]) if len(context.args) > 1 else None
+    
+    if subcommand == "list":
+        skills = service.list_skills(enabled_only=False)
+        
+        if not skills:
+            await update.message.reply_text(
+                "🔧 **No skills registered.**\n\n"
+                "Use the CLI to create skills: `skill create <name>`",
+                parse_mode="Markdown"
+            )
+            return
+        
+        lines = ["🔧 **Skills**\n"]
+        for s in skills:
+            status = "✓" if s.enabled else "○"
+            approval = " ⚠️" if s.requires_approval else ""
+            uses = f" ({s.use_count} uses)" if s.use_count > 0 else ""
+            desc = s.description[:35] + "..." if len(s.description) > 35 else s.description
+            lines.append(f"{status} **{s.name}**{approval}")
+            lines.append(f"   _{desc}_{uses}")
+        
+        lines.append(f"\n_Total: {len(skills)} skills_")
+        await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
+    
+    elif subcommand == "info":
+        if not skill_arg:
+            await update.message.reply_text("❌ Usage: `/skill info <name>`", parse_mode="Markdown")
+            return
+        
+        info = service.get_skill_info(skill_arg)
+        if not info:
+            await update.message.reply_text(f"❌ Skill '{skill_arg}' not found")
+            return
+        
+        lines = [
+            f"🔧 **{info['name']}** v{info['version']}\n",
+            f"**Source:** {info['source']}",
+            f"**Enabled:** {info['enabled']}",
+            f"**Requires approval:** {info['requires_approval']}",
+            f"**Description:** {info['description']}",
+            "",
+            "**Triggers:**",
+        ]
+        for t in info['triggers']:
+            lines.append(f'• "{t["pattern"]}" (threshold: {t["confidence_threshold"]})')
+        
+        if info['stats']['use_count'] > 0:
+            rate = info['stats']['success_rate'] or 0
+            lines.append(f"\n**Stats:** {info['stats']['use_count']} uses, {rate:.0f}% success")
+        else:
+            lines.append("\n_No usage yet_")
+        
+        await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
+    
+    elif subcommand == "run":
+        if not skill_arg:
+            await update.message.reply_text("❌ Usage: `/skill run <name>`", parse_mode="Markdown")
+            return
+        
+        success, message = service.run_skill(skill_arg)
+        
+        if success:
+            # Truncate long output
+            if len(message) > 400:
+                message = message[:400] + "\n\n_... (truncated)_"
+            await update.message.reply_text(
+                f"🔧 **Running: {skill_arg}**\n\n{message}",
+                parse_mode="Markdown"
+            )
+        else:
+            await update.message.reply_text(f"❌ {message}")
+    
+    elif subcommand == "enable":
+        if not skill_arg:
+            await update.message.reply_text("❌ Usage: `/skill enable <name>`", parse_mode="Markdown")
+            return
+        
+        success = service.enable_skill(skill_arg)
+        if success:
+            await update.message.reply_text(f"✓ Enabled skill: **{skill_arg}**", parse_mode="Markdown")
+        else:
+            await update.message.reply_text(f"❌ Skill '{skill_arg}' not found")
+    
+    elif subcommand == "disable":
+        if not skill_arg:
+            await update.message.reply_text("❌ Usage: `/skill disable <name>`", parse_mode="Markdown")
+            return
+        
+        success = service.disable_skill(skill_arg)
+        if success:
+            await update.message.reply_text(f"✓ Disabled skill: **{skill_arg}**", parse_mode="Markdown")
+        else:
+            await update.message.reply_text(f"❌ Skill '{skill_arg}' not found")
+    
+    else:
+        await update.message.reply_text(
+            f"❌ Unknown skill command: {subcommand}\n\n"
+            "Commands: `list`, `info`, `run`, `enable`, `disable`",
+            parse_mode="Markdown"
+        )
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):

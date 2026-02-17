@@ -1,6 +1,6 @@
-# Noctem v0.6.1 — Improvements, Research, and Design Notes
+# Noctem v0.8.0 — Improvements, Research, and Design Notes
 
-*Last updated: 2026-02-17 (v0.6.1 Foundation + bug fixes complete)*
+*Last updated: 2026-02-17 (v0.8.0 Skills Infrastructure complete)*
 
 ---
 
@@ -752,28 +752,162 @@ ALTER TABLE execution_logs ADD COLUMN project_id INTEGER REFERENCES projects(id)
 
 ---
 
-#### v0.8 — Skills Infrastructure (The "How")
+#### v0.8 — Skills Infrastructure (The "How") ✅ DONE
 
-| Priority | Improvement | Description | Depends On |
-|----------|-------------|-------------|------------|
-| **1** | **Skill Registry** | SQLite table tracking: installed skills, triggers, last-used, success rate | Database schema |
-| **2** | **Skill Definition Format** | SKILL.md standard: metadata header (name, triggers, description) + instructions body + optional resources folder | Registry to store them |
-| **3** | **Progressive Disclosure** | Load only skill metadata at boot (~100 tokens each); full instructions loaded only when triggered | Skill format defined |
-| **4** | **Skill Execution Logging** | All skill invocations logged (feeds 0.7 infrastructure); track success/failure/user-correction | 0.7 logging + skill format |
-| 5 | User-Created Skills | Natural language skill creation: "Teach me how to do X" → Noctem generates SKILL.md structure with user's procedure. **Personal priority: Warp integration for software development** | All skill infrastructure |
-| 6 | Skill-Wiki Bridge | Skills can reference wiki entries as authoritative sources; wiki entries can link to skills that use them | Prepares for 0.9 |
+| Priority | Improvement | Status | Notes |
+|----------|-------------|--------|-------|
+| **1** | **Skill Registry** | ✅ Done | `skills` and `skill_executions` tables; SkillRegistry class with discover, CRUD, stats |
+| **2** | **Skill Definition Format** | ✅ Done | SKILL.yaml standard with metadata + separate instructions.md; semver versioning |
+| **3** | **Progressive Disclosure** | ✅ Done | SkillLoader loads metadata only; full instructions loaded on execution |
+| **4** | **Skill Execution Logging** | ✅ Done | Full execution traces; status tracking (pending/running/completed/failed); approval workflow |
+| 5 | User-Created Skills | ✅ Done | CLI `skill create` generates SKILL.yaml + instructions.md scaffolding |
+| 6 | Skill-Wiki Bridge | — | Deferred to v0.9 wiki implementation |
 
 **Architecture**: Skills as the "how" — packaged knowledge + procedures + optional code. Integrate with wiki (0.9) as the "what" — authoritative facts and sources.
 
 ```
 skills/
-├── cooking-meal-prep/
-│   ├── SKILL.md              # Metadata + triggers
-│   ├── instructions.md       # Full procedure
-│   ├── resources/
-│   │   └── templates/
-│   └── sources.json          # Links to wiki entries
+├── example-skill/
+│   ├── SKILL.yaml            # Metadata (name, version, triggers, dependencies)
+│   ├── instructions.md       # Full procedure/instructions
+│   └── resources/            # Optional resources folder
 ```
+
+#### v0.8.0 Implementation Notes
+
+**Architecture: Modular Skills Package**
+
+The skills infrastructure is implemented as a standalone package with clean separation of concerns:
+
+```
+noctem/skills/
+├── __init__.py               # Package exports
+├── loader.py                 # YAML parsing, validation, file I/O
+├── registry.py               # Database CRUD, discovery, stats
+├── trigger.py                # Pattern matching (RapidFuzz), explicit invocation
+├── executor.py               # Execution flow, approval workflow, logging
+└── service.py                # High-level API, singleton pattern
+```
+
+**Key Design Decisions**
+
+1. **YAML over Markdown frontmatter**: Cleaner separation of metadata vs. instructions. SKILL.yaml for structured data, instructions.md for prose.
+
+2. **RapidFuzz for trigger matching**: Fast fuzzy string matching with configurable confidence thresholds (0.5-1.0). Explicit `/skill` invocation always works.
+
+3. **Approval workflow**: Skills can require approval before execution. SkillApprovalRequired exception thrown; execution record created with status='pending_approval'.
+
+4. **Two skill locations**: Bundled (`noctem/skills/bundled/`) ships with Noctem; user skills (`noctem/data/skills/`) for custom skills.
+
+5. **Semver versioning**: Skill versions follow semantic versioning for dependency tracking and compatibility.
+
+6. **Execution logging**: All invocations create skill_executions records with input, output, duration, status. Feeds into v0.7 pattern detection.
+
+**Files Created**
+
+| File | Purpose |
+|------|----------|
+| `noctem/skills/__init__.py` | Package initialization with exports |
+| `noctem/skills/loader.py` | SkillLoader: YAML parsing, validation, scaffold creation |
+| `noctem/skills/registry.py` | SkillRegistry: discover_skills(), CRUD, stats tracking |
+| `noctem/skills/trigger.py` | SkillTriggerDetector: RapidFuzz matching, explicit invocation |
+| `noctem/skills/executor.py` | SkillExecutor: execution flow, approval workflow |
+| `noctem/skills/service.py` | SkillService: high-level API, singleton pattern |
+| `noctem/web/templates/skills.html` | Web dashboard for skills management |
+| `tests/test_skill_loader.py` | 24 tests for loader module |
+| `tests/test_skill_registry.py` | 17 tests for registry module |
+| `tests/test_skill_trigger.py` | 17 tests for trigger module |
+| `tests/test_skill_executor.py` | 12 tests for executor module |
+| `tests/test_skill_service.py` | 20 tests for service module |
+
+**Files Modified**
+
+| File | Changes |
+|------|----------|
+| `noctem/db.py` | Added `skills` and `skill_executions` tables (lines 341-385) |
+| `noctem/models.py` | Added SkillTrigger, SkillMetadata, Skill, SkillExecution dataclasses (lines 802-1030) |
+| `noctem/cli.py` | Added `skill` command with subcommands: list, info, run, enable, disable, create, validate |
+| `noctem/telegram/handlers.py` | Added `/skill` command handler |
+| `noctem/telegram/bot.py` | Registered `/skill` command |
+| `noctem/web/app.py` | Added /skills page and /api/skills/* endpoints |
+| `tests/conftest.py` | Added skill table cleanup in test isolation |
+
+**Database Schema Additions**
+
+```sql
+-- v0.8.0: Skills registry
+CREATE TABLE IF NOT EXISTS skills (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL,
+    version TEXT NOT NULL,
+    description TEXT,
+    triggers TEXT,              -- JSON array of {pattern, confidence_threshold}
+    dependencies TEXT,          -- JSON array of skill names
+    requires_approval INTEGER DEFAULT 0,
+    instructions_file TEXT,
+    skill_path TEXT,
+    is_bundled INTEGER DEFAULT 0,
+    enabled INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    executions_total INTEGER DEFAULT 0,
+    executions_success INTEGER DEFAULT 0,
+    executions_failed INTEGER DEFAULT 0
+);
+
+-- v0.8.0: Skill execution logging
+CREATE TABLE IF NOT EXISTS skill_executions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    skill_id INTEGER NOT NULL REFERENCES skills(id),
+    skill_name TEXT NOT NULL,
+    status TEXT DEFAULT 'pending',  -- pending, pending_approval, running, completed, failed
+    input_text TEXT,
+    output_text TEXT,
+    error_message TEXT,
+    triggered_by TEXT,              -- 'explicit', 'pattern', 'api'
+    approved_at TEXT,
+    approved_by TEXT,
+    started_at TEXT,
+    completed_at TEXT,
+    duration_ms INTEGER,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+**SKILL.yaml Format**
+
+```yaml
+name: example-skill
+version: "1.0.0"
+description: "Short description (~100 tokens)"
+triggers:
+  - pattern: "how do I example"
+    confidence_threshold: 0.8
+dependencies: []              # Other skills this depends on
+requires_approval: false      # If true, requires user approval before execution
+instructions_file: instructions.md
+```
+
+**Test Coverage**
+
+90 skill-related tests pass. Key test scenarios:
+- Loader validates SKILL.yaml structure, semver, trigger thresholds
+- Registry discovers skills from both bundled and user directories
+- Trigger detector matches patterns with configurable confidence
+- Executor handles approval workflow and logging
+- Service provides clean high-level API
+
+**Interface Points**
+
+- **CLI**: `noctem skill list|info|run|enable|disable|create|validate`
+- **Telegram**: `/skill list|info|run <name>`
+- **Web**: `/skills` page with enable/disable/run actions, `/api/skills/*` endpoints
+
+**Post-1.0 Considerations** (from user feedback)
+
+- Skill categories/tags for organization
+- Git-based version tracking for skill changes
+- Skill marketplace/sharing infrastructure
 
 #### v0.9 — Self-Contained Wiki + Digital Aristotle (The "What")
 

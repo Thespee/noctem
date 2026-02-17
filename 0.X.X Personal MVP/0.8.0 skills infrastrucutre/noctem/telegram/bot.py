@@ -40,6 +40,7 @@ def create_bot() -> Application:
     app.add_handler(CommandHandler("suggest", handlers.cmd_suggest))
     app.add_handler(CommandHandler("seed", handlers.cmd_seed))
     app.add_handler(CommandHandler("access", handlers.cmd_access))
+    app.add_handler(CommandHandler("skill", handlers.cmd_skill))  # v0.8.0 Skills
     
     # Message handler for all other text (tasks and quick actions)
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.handle_message))
