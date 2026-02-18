@@ -15,22 +15,22 @@ Every feature should move toward complete automation of digital life management.
 ## Scope and Principles
 
 1. **Fast capture, slow reflection** — keep instant, rule-based capture; push ambiguity and review to the background.
-2. **Messaging-first** — Telegram/web chat is the control plane; unprompted outreach capped by Butler protocol.
-3. **Project-as-agent** — each project can run as a resumable "agent" with its own state and queue.
+2. **Messaging-first** — Telegram/web chat is the control plane;
+3. **Goal-Project-Task** — each project can run as its own state and queue; goals guide system, projects guide tasks
 4. **Put down / pick up** — background work must be pausable, durably persisted, and trivially resumable after human input.
-5. **Data sovereignty** — all state and decisions are local-first with graceful degradation when models/tools are unavailable.
+5. **Data sovereignty** — all state and decisions are local-first with graceful degradation when models/tools are unavailable. graceful degradation in this case is just putting it on stock pile for later
 6. **Model agility** — hot-swap local models per task; route by capability/cost/perf; maintain a registry and health checks.
 
 ---
 
 ## 1) What Noctem Already Solves
 
-| Capability | Implementation |
-|------------|----------------|
-| Quick capture | Natural language in chat/CLI; voice journals; immediate parsing for actionable items |
-| Organization | Goals → Projects → Tasks; priority = importance × urgency; ICS calendar ingest |
-| Respectful outreach | Butler protocol (max 5/week) with status, suggest, and slow-queue visibility |
-| Local-first | SQLite for data/logs; optional local LLM for slow analysis; continues working if LLM is down |
+| Capability          | Implementation                                                                               |
+| ------------------- | -------------------------------------------------------------------------------------------- |
+| Quick capture       | Natural language in chat/CLI; voice journals; immediate parsing for actionable items         |
+| Organization        | Goals → Projects → Tasks; priority = importance × urgency; ICS calendar ingest               |
+| Respectful outreach | Butler protocol with status, suggest, and slow-queue visibility                              |
+| Local-first         | SQLite for data/logs; optional local LLM for slow analysis; continues working if LLM is down |
 
 ---
 
@@ -75,14 +75,14 @@ Every feature should move toward complete automation of digital life management.
 
 ### Responsibilities
 
-| Role | Description |
-|------|-------------|
-| Attention budget | Enforce 5 contacts/week; track usage; expose "N/5 used, next contact Fri 9:00" |
-| Triage and batching | Collect pending interrupts/clarifications from project agents; batch into next scheduled window; provide quick-reply buttons |
-| Consent and safety | Gate risky actions (email send, calendar write); request human approval; log decisions |
-| Summarization | Daily/weekly status across projects (due soon, conflicts, stalled items) |
-| Scheduling intelligence | Align outreach with calendar windows and user response history |
-| Escalation | If a blocked workflow is critical (deadline within X hours), proactively request input within budget or recommend reschedule |
+| Role                    | Description                                                                                                                                  |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Attention budget        | track usage; expose "N/5 used, next contact Fri 9:00"                                                                                        |
+| Triage and batching     | Collect pending interrupts/clarifications from project agents; batch into next scheduled window; provide quick-reply buttons                 |
+| Consent and safety      | Gate risky actions that affect things outside of the system or the core functionalities of the system                                        |
+| Summarization           | Daily/weekly status across projects (due soon, conflicts, stalled items)                                                                     |
+| Scheduling intelligence | Align outreach with calendar windows and user response history. Will also need to schedule tasks that the system will undertake autonomously |
+| Escalation              | If a blocked workflow is critical (deadline within X hours), proactively request input within budget or recommend reschedule                 |
 
 ### Design Sketch
 
@@ -1084,7 +1084,7 @@ CREATE TABLE review_sessions (
 | Priority | Improvement                      | Description                                                                                                   | Depends On              |
 | -------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------- |
 | 1        | Durable workflows                | Temporal for real actions (email, calendar write); Signals/Timers and Sagas; human checkpoints on risky steps | Project-as-agent mature |
-| 2        | External integrations            | Calendar write-back, email drafting, API calls to external services                                           | Durable workflows       |
+| 2        | External integrations            | email drafting, API calls to external services                                                                | Durable workflows       |
 | 3        | Maintenance Protocol (Phase 2-3) | Butler-delivered reports; actionable quick-replies; model auto-switching based on task type                   | 0.7 self-improvement    |
 | 4        | Optional cloud routing           | Behind explicit consent; route complex tasks to cloud models; default remains local-only                      | Model registry mature   |
 | 5        | Hardware                         | Usb bootable linus server running the whole system                                                            | All core infrastructure |
@@ -1093,14 +1093,14 @@ CREATE TABLE review_sessions (
 
 Skills built on top of the v0.8 skill infrastructure that extend Noctem into personal life domains. These are **not** part of the MVP roadmap.
 
-| Skill | Description | Infrastructure Needed |
-|-------|-------------|----------------------|
-| **Habit Builder** | Track recurring behaviors; streaks and break recovery; Butler prompts at optimal times; analyze patterns over time | v0.8 skills + v0.7 logging |
-| Fitness Tracking | Log workouts, integrate with health data exports; surface trends | Wiki (0.9) for storing routines |
-| Meal Planning | Weekly meal prep suggestions; grocery list generation; recipe wiki integration | Wiki (0.9) + external API skills |
-| Finance Awareness | Budget tracking; spending pattern alerts; bill reminders | Durable workflows (1.0) for recurring checks |
-| Reading List | Track books/articles; surface "time to read" suggestions in calendar gaps | Wiki (0.9) + suggestion service |
-V2.0 -- Take Public
+| Skill             | Description                                                                                                        | Infrastructure Needed                        |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
+| **Habit Builder** | Track recurring behaviors; streaks and break recovery; Butler prompts at optimal times; analyze patterns over time | v0.8 skills + v0.7 logging                   |
+| Fitness Tracking  | Log workouts, integrate with health data exports; surface trends                                                   | Wiki (0.9) for storing routines              |
+| Meal Planning     | Weekly meal prep suggestions; grocery list generation; recipe wiki integration                                     | Wiki (0.9) + external API skills             |
+| Finance Awareness | Budget tracking; spending pattern alerts; bill reminders                                                           | Durable workflows (1.0) for recurring checks |
+| Reading List      | Track books/articles; surface "time to read" suggestions in calendar gaps                                          | Wiki (0.9) + suggestion service              |
+
 **Note on existing habit code**: The codebase contains `habit_service.py`, `Habit`/`HabitLog` models, and `habits`/`habit_logs` tables from earlier development. This infrastructure is **deferred** — it works but is not actively developed or exposed in the UI until the skill infrastructure (v0.8) is mature enough to implement habits properly as a skill.
 
 #### V2.0 — Take Public
@@ -1132,9 +1132,7 @@ V2.0 -- Take Public
 | Super Productivity | Privacy-focused, time tracking, Jira/GitHub integration |
 | Lunatask | Encrypted, habit tracking + journaling |
 | Vikunja | Self-hosted Todoist alternative with Kanban |
-
-**Noctem's differentiation:** None combine Telegram integration + AI suggestions + butler protocol + data sovereignty.
-
+We need to make the jump to a privacy first task do-er
 ### Broader Alternatives
 
 | Approach             | Examples                             |
@@ -1144,6 +1142,7 @@ V2.0 -- Take Public
 | All-in-one workspace | Notion, Nuclino                      |
 | Paper/analog         | Moleskine, bullet journal            |
 
+Should be able to mimic these systems with our own backend
 ### AI Agent Platforms
 
 | Platform | Key Pattern for Noctem |

@@ -42,7 +42,7 @@ Skills are Noctem's extensible system for packaged knowledge and procedures. Thi
 - Python 3.10+ (https://python.org)
 - pip (comes with Python)
 
-**Optional (for full features):**
+**Strongly Recommended Optional (for full features):**
 - Ollama (https://ollama.ai) - for AI suggestions (slow mode)
 - Telegram account - for mobile notifications
 
