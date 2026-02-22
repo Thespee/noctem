@@ -137,6 +137,13 @@ def create_app() -> Flask:
         forecast_14 = get_14_day_forecast()
         week_table = get_7_day_table_data()
         
+        # v0.9.1: Feedback session status for dashboard widget
+        try:
+            from ..butler.feedback import get_session_status
+            feedback_status = get_session_status()
+        except Exception:
+            feedback_status = None
+        
         return render_template(
             "dashboard.html",
             today=today,
@@ -159,6 +166,8 @@ def create_app() -> Flask:
             # v0.6.0 Final data
             forecast_14=forecast_14,
             week_table=week_table,
+            # v0.9.1 data
+            feedback_status=feedback_status,
         )
     
     @app.route("/health")
@@ -865,6 +874,259 @@ def create_app() -> Flask:
         return jsonify({
             "success": True,
             "new_version": new_version.version,
+        })
+    
+    # =========================================================================
+    # v0.9.1: Calendar View (Google Calendar-style weekly grid)
+    # =========================================================================
+    
+    @app.route("/calendar/view")
+    def calendar_view():
+        """Calendar weekly view page — Google Calendar inspired."""
+        saved_urls = get_saved_urls()
+        return render_template("calendar_view.html", saved_urls=saved_urls)
+    
+    @app.route("/api/calendar/week")
+    def api_calendar_week():
+        """
+        Get events for a specific week.
+        Query param: date=YYYY-MM-DD (any day in the desired week).
+        Returns events grouped by day, Mon-Sun.
+        """
+        from ..db import get_db
+        
+        date_str = request.args.get('date')
+        if date_str:
+            try:
+                ref_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+            except ValueError:
+                ref_date = date.today()
+        else:
+            ref_date = date.today()
+        
+        # Find Monday of this week
+        monday = ref_date - timedelta(days=ref_date.weekday())
+        sunday = monday + timedelta(days=6)
+        
+        with get_db() as conn:
+            events = conn.execute("""
+                SELECT * FROM time_blocks
+                WHERE date(start_time) >= ? AND date(start_time) <= ?
+                ORDER BY start_time ASC
+            """, (monday.isoformat(), sunday.isoformat())).fetchall()
+        
+        # Group by day
+        days = []
+        for i in range(7):
+            day = monday + timedelta(days=i)
+            day_events = []
+            for e in events:
+                start = e['start_time']
+                if isinstance(start, str):
+                    try:
+                        start_dt = datetime.fromisoformat(start)
+                    except ValueError:
+                        continue
+                else:
+                    start_dt = start
+                
+                if start_dt.date() == day:
+                    end = e['end_time']
+                    if isinstance(end, str):
+                        try:
+                            end_dt = datetime.fromisoformat(end)
+                        except ValueError:
+                            end_dt = start_dt + timedelta(hours=1)
+                    else:
+                        end_dt = end or start_dt + timedelta(hours=1)
+                    
+                    day_events.append({
+                        'id': e['id'],
+                        'title': e['title'],
+                        'start': start_dt.isoformat(),
+                        'end': end_dt.isoformat(),
+                        'start_hour': start_dt.hour + start_dt.minute / 60,
+                        'end_hour': end_dt.hour + end_dt.minute / 60,
+                        'source': e['source'],
+                    })
+            
+            days.append({
+                'date': day.isoformat(),
+                'day_name': day.strftime('%a'),
+                'is_today': day == date.today(),
+                'events': day_events,
+            })
+        
+        return jsonify({
+            'week_start': monday.isoformat(),
+            'week_end': sunday.isoformat(),
+            'days': days,
+        })
+    
+    # =========================================================================
+    # v0.9.1: Task Upcoming View (Todoist-style rolling days)
+    # =========================================================================
+    
+    @app.route("/tasks/upcoming")
+    def tasks_upcoming():
+        """Task upcoming view — rolling few days + overdue."""
+        return render_template("tasks_upcoming.html")
+    
+    @app.route("/api/tasks/upcoming")
+    def api_tasks_upcoming():
+        """Get tasks grouped by day for the next 5 days + overdue."""
+        today = date.today()
+        overdue = task_service.get_overdue_tasks()
+        
+        days = []
+        for i in range(5):
+            day = today + timedelta(days=i)
+            day_tasks = task_service.get_tasks_due_on(day)
+            
+            # Sort by priority_score
+            day_tasks.sort(key=lambda t: t.priority_score, reverse=True)
+            
+            tasks_data = []
+            for t in day_tasks:
+                project_name = None
+                if t.project_id:
+                    p = project_service.get_project(t.project_id)
+                    project_name = p.name if p else None
+                
+                tasks_data.append({
+                    'id': t.id,
+                    'name': t.name,
+                    'importance': t.importance,
+                    'urgency': t.urgency,
+                    'priority_score': t.priority_score,
+                    'due_time': t.due_time.isoformat() if t.due_time else None,
+                    'project_name': project_name,
+                    'project_id': t.project_id,
+                    'status': t.status,
+                    'tags': t.tags,
+                })
+            
+            days.append({
+                'date': day.isoformat(),
+                'day_name': day.strftime('%A'),
+                'is_today': day == today,
+                'tasks': tasks_data,
+            })
+        
+        # Overdue tasks
+        overdue_data = []
+        for t in overdue:
+            project_name = None
+            if t.project_id:
+                p = project_service.get_project(t.project_id)
+                project_name = p.name if p else None
+            overdue_data.append({
+                'id': t.id,
+                'name': t.name,
+                'importance': t.importance,
+                'due_date': t.due_date.isoformat() if t.due_date else None,
+                'project_name': project_name,
+                'priority_score': t.priority_score,
+            })
+        
+        return jsonify({
+            'overdue': overdue_data,
+            'days': days,
+        })
+    
+    # =========================================================================
+    # v0.9.1: Task Projects View (Kanban-style board)
+    # =========================================================================
+    
+    @app.route("/tasks/projects")
+    def tasks_projects():
+        """Task projects board — columns per project, Notion-style side panel."""
+        return render_template("tasks_projects.html")
+    
+    @app.route("/api/tasks/projects")
+    def api_tasks_projects():
+        """Get tasks grouped by project for the board view."""
+        projects = project_service.get_active_projects()
+        
+        columns = []
+        for proj in projects:
+            tasks = task_service.get_project_tasks(proj.id)
+            # Filter active tasks and sort by priority
+            active_tasks = [t for t in tasks if t.status not in ('done', 'canceled')]
+            active_tasks.sort(key=lambda t: t.priority_score, reverse=True)
+            
+            columns.append({
+                'project_id': proj.id,
+                'project_name': proj.name,
+                'status': proj.status,
+                'ai_summary': proj.next_action_suggestion,
+                'tasks': [{
+                    'id': t.id,
+                    'name': t.name,
+                    'importance': t.importance,
+                    'urgency': t.urgency,
+                    'priority_score': t.priority_score,
+                    'due_date': t.due_date.isoformat() if t.due_date else None,
+                    'due_time': t.due_time.isoformat() if t.due_time else None,
+                    'status': t.status,
+                    'tags': t.tags,
+                    'computer_help_suggestion': t.computer_help_suggestion,
+                } for t in active_tasks],
+                'done_count': len([t for t in tasks if t.status == 'done']),
+                'total_count': len(tasks),
+            })
+        
+        # Inbox: tasks without a project
+        inbox_tasks = task_service.get_inbox_tasks()
+        inbox_active = [t for t in inbox_tasks if t.status not in ('done', 'canceled')]
+        inbox_active.sort(key=lambda t: t.priority_score, reverse=True)
+        
+        inbox = {
+            'project_name': 'Inbox',
+            'project_id': None,
+            'ai_summary': None,
+            'tasks': [{
+                'id': t.id,
+                'name': t.name,
+                'importance': t.importance,
+                'urgency': t.urgency,
+                'priority_score': t.priority_score,
+                'due_date': t.due_date.isoformat() if t.due_date else None,
+                'due_time': t.due_time.isoformat() if t.due_time else None,
+                'status': t.status,
+                'tags': t.tags,
+                'computer_help_suggestion': t.computer_help_suggestion,
+            } for t in inbox_active],
+        }
+        
+        return jsonify({
+            'columns': columns,
+            'inbox': inbox,
+        })
+    
+    # =========================================================================
+    # v0.9.1: Butler Status API (includes feedback sessions)
+    # =========================================================================
+    
+    @app.route("/api/butler/status")
+    def api_butler_status():
+        """Get Butler status including feedback session info."""
+        butler_status = get_butler_status()
+        
+        try:
+            from ..butler.feedback import get_session_status
+            feedback = get_session_status()
+        except Exception:
+            feedback = {
+                "next_session": None,
+                "next_session_id": None,
+                "total_pending_questions": 0,
+                "sessions_completed_this_week": 0,
+            }
+        
+        return jsonify({
+            **butler_status,
+            'feedback': feedback,
         })
     
     # =========================================================================

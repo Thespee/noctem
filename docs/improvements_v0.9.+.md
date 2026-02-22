@@ -1,6 +1,6 @@
-# Noctem v0.9.0 — Improvements, Research, and Design Notes
+# Noctem v0.9.1 — Improvements, Research, and Design Notes
 
-*Last updated: 2026-02-17 (v0.9.0 Wiki implementation in progress)*
+*Last updated: 2026-02-22 (v0.9.1 Implementation complete)*
 
 ---
 
@@ -1038,9 +1038,124 @@ CREATE INDEX idx_chunks_chunk_id ON knowledge_chunks(chunk_id);
 
 ---
 
-#### v0.9.1 — Digital Aristotle (Learning & Teaching)
+#### v0.9.1 — UX, CLI, and Bridge Layer ✅ DONE
 
 *Depends on: v0.9.0 Wiki Core complete*
+
+| Priority | Improvement | Status | Notes |
+|----------|-------------|--------|-------|
+| **1** | **Command Shortcuts (.prefix)** | ✅ Done | `.` prefix support alongside `/`; shorthand map: `.t` `.p` `.g` `.d` `.s` `.w`; new CommandTypes: WIKI, GOAL, SESSION, SUMMON |
+| **2** | **Wiki CLI Commands** | ✅ Done | `handle_wiki_command()` with ingest/search/ask/sources/status/verify subcommands; routed via `.w` or `wiki ` |
+| **3** | **Feedback Sessions** | ✅ Done | New DB tables (feedback_sessions, feedback_questions); full lifecycle service; `.s` CLI command; Butler integration |
+| **4** | **Calendar View (Web)** | ✅ Done | `/calendar/view` route; Google Calendar-style weekly grid; `/api/calendar/week` JSON endpoint; prev/next nav |
+| **5** | **Task Upcoming View (Web)** | ✅ Done | `/tasks/upcoming` route; Todoist-style rolling 5 days + overdue; priority filters; `/api/tasks/upcoming` endpoint |
+| **6** | **Task Projects View (Web)** | ✅ Done | `/tasks/projects` route; Kanban board; Notion-style slide-out side panel; `/api/tasks/projects` endpoint |
+| **7** | **Skill-Wiki Bridge** | ✅ Done | `{{wiki:query}}` placeholders in skill instructions resolved with wiki search results; `wiki_context` in execution context |
+| **8** | **Butler Status Widget** | ✅ Done | Feedback session info in dashboard status bar; `/api/butler/status` includes session data; new nav links |
+
+**Known Issue (Deferred)**: Skills page internal error — noted for fix in next version.
+
+**Deferred to v0.9.7+**: Digital Aristotle (Socratic mode, spaced repetition, SM-2 algorithm). Original learning_items/review_sessions schema preserved below for future reference.
+
+#### v0.9.1 Implementation Notes
+
+**Architecture Decisions**
+
+1. **Dot-prefix command shortcuts** (`.t`, `.p`, etc.): Designed for phone keyboard; `/` still works as fallback. Implemented via `SHORTHAND_MAP` in command.py with unified prefix handling.
+
+2. **Feedback sessions as separate concept**: Disambiguates from generic "tasks". Sessions scheduled on Butler update days with targeted questions for ambiguous tasks (no due date, no project, short names). Max 5 questions per session with per-check cap enforcement.
+
+3. **Web views as new routes, not dashboard modifications**: Dashboard stays untouched; calendar view (`/calendar/view`) is distinct from calendar management (`/calendar`). All views are API-backed for future mobile use.
+
+4. **Skill-wiki bridge via template syntax**: `{{wiki:query}}` in skill instructions is resolved at execution time. Non-wiki `{{variable}}` placeholders are not touched. Errors are caught gracefully — skill execution continues even if wiki lookup fails.
+
+**Files Created**
+
+| File | Purpose |
+|------|----------|
+| `noctem/butler/feedback.py` | Full feedback session lifecycle: create, start, complete, question generation, interactive CLI mode, status for widget |
+| `noctem/web/templates/calendar_view.html` | Google Calendar-style weekly grid with sidebar, time slots, event blocks |
+| `noctem/web/templates/tasks_upcoming.html` | Todoist-style rolling days with overdue section, priority filters, stats bar |
+| `noctem/web/templates/tasks_projects.html` | Kanban board with project columns, AI summaries, Notion-style side panel |
+| `tests/test_v091_command_shortcuts.py` | 38 tests for command parsing and shorthand map |
+| `tests/test_v091_wiki_cli.py` | 18 tests for wiki CLI subcommands |
+| `tests/test_v091_feedback_sessions.py` | 17 tests for feedback session lifecycle |
+| `tests/test_v091_web_views.py` | 32 tests for web routes and API endpoints |
+| `tests/test_v091_skill_wiki.py` | 14 tests for wiki bridge regex, resolution, and integration |
+
+**Files Modified**
+
+| File | Changes |
+|------|----------|
+| `noctem/parser/command.py` | Added WIKI, GOAL, SESSION, SUMMON to CommandType; `.`/`/` prefix handling; SHORTHAND_MAP |
+| `noctem/cli.py` | Added handle_wiki_command(), handle_session_command(); routing for new command types |
+| `noctem/db.py` | Added feedback_sessions and feedback_questions tables with indexes |
+| `noctem/models.py` | Added FeedbackSession and FeedbackQuestion dataclasses |
+| `noctem/skills/executor.py` | Added `_resolve_wiki_placeholders()` with `WIKI_PLACEHOLDER_RE`; wiki_context injection |
+| `noctem/web/app.py` | Added 7 new routes/endpoints; feedback_status passed to dashboard |
+| `noctem/web/templates/dashboard.html` | Added v0.9.1 nav links (Calendar, Upcoming, Projects); feedback session status item |
+| `tests/conftest.py` | Added feedback table cleanup |
+
+**Database Schema Additions**
+
+```sql
+-- v0.9.1: Feedback sessions
+CREATE TABLE feedback_sessions (
+    id TEXT PRIMARY KEY,
+    scheduled_date TEXT NOT NULL,
+    status TEXT DEFAULT 'pending',
+    started_at TEXT,
+    completed_at TEXT,
+    questions_total INTEGER DEFAULT 0,
+    questions_answered INTEGER DEFAULT 0,
+    questions_skipped INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE feedback_questions (
+    id TEXT PRIMARY KEY,
+    session_id TEXT NOT NULL REFERENCES feedback_sessions(id),
+    task_id TEXT NOT NULL,
+    question_type TEXT NOT NULL,
+    question_text TEXT NOT NULL,
+    answer_text TEXT,
+    status TEXT DEFAULT 'pending',
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    answered_at TEXT
+);
+
+CREATE INDEX idx_feedback_sessions_date ON feedback_sessions(scheduled_date);
+CREATE INDEX idx_feedback_questions_session ON feedback_questions(session_id);
+```
+
+**Test Coverage**
+
+119 new v0.9.1 tests pass (total: 715+ across all versions). Key scenarios:
+- Command parsing accepts both `.` and `/` prefixes
+- Wiki CLI subcommands route correctly with mock patches at source module
+- Feedback sessions enforce question caps, generate targeted questions
+- All 7 web routes return 200; API endpoints return correct JSON structures
+- Calendar API groups events by day, handles date params, falls back on invalid input
+- Task APIs sort by priority, exclude done/canceled, include project names
+- Skill-wiki bridge resolves placeholders, handles errors gracefully, integrates into execution flow
+
+**Learnings**
+
+1. **Mock patch paths follow import chain**: Wiki CLI tests required patching at source module (`noctem.wiki.query.ask`) not at consumer (`noctem.cli.ask`) because `handle_wiki_command` uses lazy `from .wiki.xxx import` inside the function body.
+
+2. **Feedback session question cap needs per-check enforcement**: `_generate_questions()` initially only checked `len(questions) < max_questions` at loop end, causing overshoot. Fixed by adding checks before each `_create_question()` call.
+
+3. **DB CHECK constraints matter in tests**: `time_blocks.source` has a CHECK constraint for ('manual', 'gcal', 'ics'). Tests must use valid values.
+
+4. **API-first web views enable future mobile clients**: All three new views fetch data from JSON API endpoints. The templates are purely rendering layers.
+
+5. **Reversed iteration for multi-placeholder replacement**: When replacing multiple `{{wiki:...}}` patterns, iterating in reverse order preserves string positions for earlier matches.
+
+---
+
+#### v0.9.7+ — Digital Aristotle (Learning & Teaching) — FUTURE
+
+*Deferred from v0.9.1. Depends on: v0.9.1 complete + user feedback on wiki usage patterns*
 
 | Priority | Improvement | Description | Depends On |
 |----------|-------------|-------------|------------|
@@ -1050,7 +1165,7 @@ CREATE INDEX idx_chunks_chunk_id ON knowledge_chunks(chunk_id);
 | 4 | Learning Progress | Track: concepts studied, ease factors, review history, mastery estimates | Review mode |
 | 5 | Teaching Safeguards | Detect shallow understanding; require explanation before advancing; never hollow validation | All above |
 
-**Data Model Additions (v0.9.1)**:
+**Data Model (Future)**:
 
 ```sql
 -- Spaced repetition tracking

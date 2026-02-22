@@ -200,6 +200,10 @@ def handle_input(text: str, log: MessageLog = None) -> bool:
                 print(f"    → {p.next_action_suggestion}")
         return True
     
+    # v0.9.1: Wiki commands (via 'wiki ...' or '.w ...' or '/wiki ...')
+    if text_lower.startswith('wiki '):
+        return handle_wiki_command(text[5:].strip(), log)
+    
     # v0.8.0: Skill commands
     if text_lower.startswith('skill '):
         return handle_skill_command(text_lower[6:].strip(), log)
@@ -253,26 +257,7 @@ def handle_input(text: str, log: MessageLog = None) -> bool:
             log.set_result(True, {"processed": count})
         return True
     
-    # v0.6.1: Summon command
-    if text_lower.startswith('/summon') or text_lower.startswith('summon '):
-        from .butler.summon import handle_summon
-        
-        # Extract message after /summon or summon
-        if text_lower.startswith('/summon'):
-            message = text[7:].strip()
-        else:
-            message = text[7:].strip()
-        
-        if log:
-            log.set_parsed("SUMMON", {"message": message})
-            log.set_action("summon")
-        
-        response, metadata = handle_summon(message, source="cli")
-        print(response)
-        
-        if log:
-            log.set_result(True, metadata)
-        return True
+    # v0.6.1: Summon command (legacy location — now handled above via parse_command routing)
     
     # v0.6.1: Maintenance commands
     if text_lower.startswith('maintenance'):
@@ -547,6 +532,28 @@ def handle_input(text: str, log: MessageLog = None) -> bool:
             print(f"✓ Created goal: {goal.name}")
         return True
     
+    # v0.6.1: Summon command (handle before parse_command to preserve raw text)
+    if text_lower.startswith('/summon') or text_lower.startswith('summon ') or text_lower.startswith('.summon'):
+        from .butler.summon import handle_summon
+        
+        if text_lower.startswith('.summon'):
+            message = text[7:].strip()
+        elif text_lower.startswith('/summon'):
+            message = text[7:].strip()
+        else:
+            message = text[7:].strip()
+        
+        if log:
+            log.set_parsed("SUMMON", {"message": message})
+            log.set_action("summon")
+        
+        response, metadata = handle_summon(message, source="cli")
+        print(response)
+        
+        if log:
+            log.set_result(True, metadata)
+        return True
+    
     cmd = parse_command(text)
     if log:
         log.set_parsed(cmd.type.name, {
@@ -679,6 +686,35 @@ def handle_input(text: str, log: MessageLog = None) -> bool:
                 log.set_action("delete_task")
                 log.set_result(False, {"error": "task_not_found"})
             print("❌ Task not found")
+    
+    elif cmd.type == CommandType.WIKI:
+        # Route to wiki handler (args already parsed by parse_command)
+        wiki_args = " ".join(cmd.args) if cmd.args else ""
+        return handle_wiki_command(wiki_args, log)
+    
+    elif cmd.type == CommandType.GOAL:
+        if cmd.args:
+            goal = goal_service.create_goal(" ".join(cmd.args))
+            if log:
+                log.set_action("create_goal")
+                log.set_result(True, {"goal_id": goal.id})
+            print(f"✓ Created goal: {goal.name}")
+        else:
+            print("Usage: .g <name> or /goal <name>")
+    
+    elif cmd.type == CommandType.SESSION:
+        return handle_session_command(log)
+    
+    elif cmd.type == CommandType.SUMMON:
+        from .butler.summon import handle_summon
+        message = " ".join(cmd.args) if cmd.args else ""
+        if log:
+            log.set_parsed("SUMMON", {"message": message})
+            log.set_action("summon")
+        response, metadata = handle_summon(message, source="cli")
+        print(response)
+        if log:
+            log.set_result(True, metadata)
     
     elif cmd.type == CommandType.NEW_TASK:
         # Use thoughts-first capture system (royal scribe pattern)
@@ -882,6 +918,318 @@ def handle_skill_command(args: str, log) -> bool:
     else:
         print(f"❌ Unknown skill command: {subcommand}")
         print("   Commands: list, info, run, enable, disable, create, validate")
+        return True
+
+
+def handle_wiki_command(args: str, log) -> bool:
+    """
+    Handle wiki subcommands.
+    
+    Commands:
+        ingest [file]     - Ingest new sources (or specific file)
+        search "query"    - Semantic search
+        ask "question"    - Q&A with citations
+        sources           - List indexed sources
+        status            - Show wiki stats
+        verify            - Check for changed source files
+    """
+    from pathlib import Path
+    from .wiki.ingestion import (
+        discover_new_sources, create_source, extract_text,
+        update_source_status, list_sources, verify_source, get_source_by_path,
+    )
+    from .wiki.chunking import chunk_text, save_chunks
+    from .wiki.embeddings import add_chunks_to_vectorstore, check_ollama_available
+    from .wiki.retrieval import get_wiki_stats
+    from .wiki.query import ask, simple_search, check_wiki_ready
+    from .wiki import SOURCES_DIR
+    
+    parts = args.split(None, 1)
+    subcommand = parts[0] if parts else "help"
+    sub_arg = parts[1] if len(parts) > 1 else None
+    
+    if log:
+        log.set_parsed("WIKI", {"subcommand": subcommand, "arg": sub_arg})
+    
+    if subcommand == "ingest":
+        if log:
+            log.set_action("wiki_ingest")
+        
+        # Check Ollama first
+        ollama_ok, ollama_msg = check_ollama_available()
+        if not ollama_ok:
+            print(f"\n❌ {ollama_msg}")
+            if log:
+                log.set_result(False, {"error": "ollama_unavailable"})
+            return True
+        
+        if sub_arg:
+            # Ingest specific file
+            file_path = Path(sub_arg).resolve()
+            if not file_path.exists():
+                # Try relative to sources dir
+                file_path = SOURCES_DIR / sub_arg
+            if not file_path.exists():
+                print(f"❌ File not found: {sub_arg}")
+                if log:
+                    log.set_result(False, {"error": "file_not_found"})
+                return True
+            files_to_ingest = [file_path]
+        else:
+            # Discover all new files
+            files_to_ingest = discover_new_sources()
+            if not files_to_ingest:
+                print("\n✅ No new files to ingest.")
+                print(f"   Put files in: {SOURCES_DIR}")
+                if log:
+                    log.set_result(True, {"files": 0})
+                return True
+        
+        print(f"\n📚 Ingesting {len(files_to_ingest)} file(s)...\n")
+        success_count = 0
+        
+        for file_path in files_to_ingest:
+            try:
+                print(f"  Processing: {file_path.name}")
+                
+                # Check if already tracked
+                existing = get_source_by_path(str(file_path.resolve()))
+                if existing and existing.status == 'indexed':
+                    print(f"    → Already indexed (skipping)")
+                    continue
+                
+                # Create source record
+                if not existing:
+                    source = create_source(file_path)
+                else:
+                    source = existing
+                
+                # Extract text
+                update_source_status(source.id, 'processing')
+                text, metadata = extract_text(file_path)
+                
+                if not text.strip():
+                    update_source_status(source.id, 'failed', error_message="No text extracted")
+                    print(f"    → No text extracted (skipping)")
+                    continue
+                
+                # Chunk text
+                file_type = source.file_type or 'txt'
+                chunks = chunk_text(text, file_type=file_type)
+                
+                if not chunks:
+                    update_source_status(source.id, 'failed', error_message="No chunks generated")
+                    print(f"    → No chunks generated (skipping)")
+                    continue
+                
+                # Save chunks to DB
+                db_chunks = save_chunks(source.id, chunks)
+                
+                # Add to vector store
+                added = add_chunks_to_vectorstore(db_chunks)
+                
+                # Update source status
+                update_source_status(source.id, 'indexed', chunk_count=len(db_chunks))
+                
+                print(f"    ✓ {len(db_chunks)} chunks indexed")
+                success_count += 1
+                
+            except Exception as e:
+                print(f"    ❌ Error: {e}")
+                try:
+                    update_source_status(source.id, 'failed', error_message=str(e))
+                except Exception:
+                    pass
+        
+        print(f"\n✓ Ingested {success_count}/{len(files_to_ingest)} files")
+        if log:
+            log.set_result(True, {"files": success_count})
+    
+    elif subcommand == "search":
+        if not sub_arg:
+            print("Usage: wiki search \"your query\"")
+            return True
+        
+        if log:
+            log.set_action("wiki_search")
+        
+        query = sub_arg.strip('"').strip("'")
+        print(f"\n🔍 Searching: {query}\n")
+        
+        try:
+            results = simple_search(query)
+            if not results:
+                print("  No results found.")
+                if log:
+                    log.set_result(True, {"results": 0})
+                return True
+            
+            for i, (content, citation, score) in enumerate(results, 1):
+                print(f"  [{i}] {citation} (similarity: {score:.2f})")
+                # Show first 200 chars of content
+                snippet = content[:200].replace('\n', ' ')
+                print(f"      {snippet}..." if len(content) > 200 else f"      {snippet}")
+                print()
+            
+            if log:
+                log.set_result(True, {"results": len(results)})
+        except Exception as e:
+            print(f"❌ Search error: {e}")
+            if log:
+                log.set_result(False, {"error": str(e)})
+    
+    elif subcommand == "ask":
+        if not sub_arg:
+            print("Usage: wiki ask \"your question\"")
+            return True
+        
+        if log:
+            log.set_action("wiki_ask")
+        
+        question = sub_arg.strip('"').strip("'")
+        print(f"\n🤔 Asking: {question}\n")
+        
+        try:
+            answer = ask(question)
+            print(answer.formatted())
+            print()
+            
+            if log:
+                log.set_result(True, {
+                    "has_answer": answer.has_answer,
+                    "sources_used": len(answer.sources_used),
+                    "model": answer.model_used,
+                })
+        except Exception as e:
+            print(f"❌ Error: {e}")
+            if log:
+                log.set_result(False, {"error": str(e)})
+    
+    elif subcommand == "sources":
+        if log:
+            log.set_action("wiki_sources")
+        
+        trust_filter = None
+        if sub_arg:
+            # Parse --trust N
+            try:
+                trust_filter = int(sub_arg.replace('--trust', '').strip())
+            except ValueError:
+                pass
+        
+        sources = list_sources(trust_level=trust_filter)
+        
+        if not sources:
+            print("\n📚 No sources indexed yet.")
+            print(f"   Put files in: {SOURCES_DIR}")
+            print("   Then run: wiki ingest")
+        else:
+            print(f"\n📚 Wiki Sources ({len(sources)})\n")
+            trust_labels = {1: "personal", 2: "curated", 3: "web"}
+            for s in sources:
+                status_emoji = "✅" if s.status == 'indexed' else "⏳" if s.status == 'pending' else "❌"
+                trust = trust_labels.get(s.trust_level, "?")
+                chunks = f"{s.chunk_count} chunks" if s.chunk_count else "no chunks"
+                print(f"  {status_emoji} {s.title or s.file_name} [{trust}] ({chunks})")
+        
+        if log:
+            log.set_result(True, {"count": len(sources)})
+    
+    elif subcommand == "status":
+        if log:
+            log.set_action("wiki_status")
+        
+        stats = get_wiki_stats()
+        ready, msg = check_wiki_ready()
+        
+        print(f"\n📊 Wiki Status\n")
+        print(f"  {msg}\n")
+        
+        status_counts = stats.get("sources_by_status", {})
+        if status_counts:
+            print("  Sources:")
+            for status, count in status_counts.items():
+                emoji = "✅" if status == 'indexed' else "⏳" if status == 'pending' else "🔄" if status == 'changed' else "❌"
+                print(f"    {emoji} {status}: {count}")
+        
+        print(f"\n  Total chunks: {stats.get('total_chunks', 0)}")
+        
+        trust_counts = stats.get("sources_by_trust", {})
+        if trust_counts:
+            trust_labels = {1: "personal", 2: "curated", 3: "web"}
+            print("\n  By trust level:")
+            for level, count in trust_counts.items():
+                print(f"    {trust_labels.get(level, '?')}: {count}")
+        
+        if log:
+            log.set_result(True, stats)
+    
+    elif subcommand == "verify":
+        if log:
+            log.set_action("wiki_verify")
+        
+        sources = list_sources(status='indexed')
+        if not sources:
+            print("\n✅ No indexed sources to verify.")
+            if log:
+                log.set_result(True, {"verified": 0})
+            return True
+        
+        print(f"\n🔍 Verifying {len(sources)} source(s)...\n")
+        changed = 0
+        
+        for source in sources:
+            unchanged = verify_source(source)
+            if unchanged:
+                print(f"  ✅ {source.title or source.file_name}: unchanged")
+            else:
+                print(f"  ⚠️  {source.title or source.file_name}: CHANGED (re-ingest needed)")
+                changed += 1
+        
+        if changed:
+            print(f"\n⚠️  {changed} source(s) changed. Run 'wiki ingest' to re-index.")
+        else:
+            print(f"\n✅ All sources verified.")
+        
+        if log:
+            log.set_result(True, {"verified": len(sources), "changed": changed})
+    
+    else:
+        print("""
+📚 Wiki Commands
+
+  wiki ingest [file]     Ingest sources from data/sources/
+  wiki search "query"    Semantic search across knowledge base
+  wiki ask "question"    Ask a question (LLM-powered with citations)
+  wiki sources           List all indexed sources
+  wiki status            Show wiki statistics
+  wiki verify            Check if source files have changed
+
+Shortcut: .w <subcommand>
+""")
+        if log:
+            log.set_action("wiki_help")
+            log.set_result(True)
+    
+    return True
+
+
+def handle_session_command(log) -> bool:
+    """
+    Handle feedback session initiation.
+    Placeholder until feedback module is implemented.
+    """
+    if log:
+        log.set_parsed("SESSION", {})
+        log.set_action("start_session")
+    
+    try:
+        from .butler.feedback import start_interactive_session
+        return start_interactive_session(log)
+    except ImportError:
+        print("\n⏳ Feedback sessions not yet available.")
+        if log:
+            log.set_result(False, {"error": "not_implemented"})
         return True
 
 

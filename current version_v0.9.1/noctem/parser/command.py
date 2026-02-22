@@ -18,6 +18,7 @@ class CommandType(Enum):
     PROJECTS = "projects"
     PROJECT = "project"  # /project <name> - create project
     GOALS = "goals"
+    GOAL = "goal"  # /goal <name> - create goal
     SETTINGS = "settings"
     PRIORITIZE = "prioritize"  # /prioritize n - reorder top n tasks
     UPDATE = "update"  # /update n - fill in missing info
@@ -28,6 +29,11 @@ class CommandType(Enum):
     SKIP = "skip"
     DELETE = "delete"
     CORRECT = "correct"  # * prefix to update last entity
+    
+    # v0.9.1: New command types
+    WIKI = "wiki"  # wiki subcommands
+    SESSION = "session"  # feedback session
+    SUMMON = "summon"  # direct butler contact
     
     # Default: new task
     NEW_TASK = "new_task"
@@ -70,12 +76,31 @@ def parse_command(text: str) -> ParsedCommand:
             raw_text=text,
         )
     
-    # Slash commands
-    if text.startswith('/'):
-        parts = text[1:].split(maxsplit=1)
-        cmd = parts[0].lower()
-        args = parts[1].split() if len(parts) > 1 else []
+    # v0.9.1: Dot-prefix shortcuts (primary, phone-friendly)
+    # Also accepts / as fallback — both route to the same CommandType
+    if text.startswith('.') or text.startswith('/'):
+        prefix_char = text[0]
+        rest = text[1:]
+        parts = rest.split(maxsplit=1)
+        if not parts:
+            # Bare . or / — treat as new task
+            return ParsedCommand(type=CommandType.NEW_TASK, args=[], raw_text=text)
         
+        cmd = parts[0].lower()
+        raw_args = parts[1] if len(parts) > 1 else ""
+        args = raw_args.split() if raw_args else []
+        
+        # Shorthand map (single-letter shortcuts)
+        shorthand_map = {
+            't': CommandType.NEW_TASK,
+            'p': CommandType.PROJECT,
+            'g': CommandType.GOAL,
+            'd': CommandType.DONE,
+            's': CommandType.SKIP,
+            'w': CommandType.WIKI,
+        }
+        
+        # Full command name map
         cmd_map = {
             'start': CommandType.START,
             'help': CommandType.HELP,
@@ -84,17 +109,43 @@ def parse_command(text: str) -> ParsedCommand:
             'projects': CommandType.PROJECTS,
             'project': CommandType.PROJECT,
             'goals': CommandType.GOALS,
+            'goal': CommandType.GOAL,
             'settings': CommandType.SETTINGS,
             'prioritize': CommandType.PRIORITIZE,
             'update': CommandType.UPDATE,
+            'wiki': CommandType.WIKI,
+            'session': CommandType.SESSION,
+            'summon': CommandType.SUMMON,
+            'web': CommandType.WEB,
+            'done': CommandType.DONE,
+            'skip': CommandType.SKIP,
+            'delete': CommandType.DELETE,
         }
         
-        cmd_type = cmd_map.get(cmd, CommandType.NEW_TASK)
-        return ParsedCommand(
-            type=cmd_type,
-            args=args,
-            raw_text=text,
-        )
+        # Try shorthand first (single letter), then full name
+        cmd_type = shorthand_map.get(cmd) or cmd_map.get(cmd)
+        
+        if cmd_type:
+            # For done/skip/delete, parse target_id/target_name
+            target_id = None
+            target_name = None
+            if cmd_type in (CommandType.DONE, CommandType.SKIP, CommandType.DELETE) and raw_args:
+                target = raw_args.strip()
+                if target.isdigit():
+                    target_id = int(target)
+                else:
+                    target_name = target.lower()
+            
+            return ParsedCommand(
+                type=cmd_type,
+                args=args,
+                raw_text=text,
+                target_id=target_id,
+                target_name=target_name,
+            )
+        
+        # Unknown command after . or / — treat as new task
+        return ParsedCommand(type=CommandType.NEW_TASK, args=[], raw_text=text)
     
     # Quick actions: done
     match = re.match(r'^done\s+(.+)$', text_lower)

@@ -9,6 +9,7 @@ Execution stages:
 5. complete → success/failure
 """
 
+import re
 import uuid
 from datetime import datetime
 from pathlib import Path
@@ -159,6 +160,11 @@ class SkillExecutor:
         })
         
         try:
+            # v0.9.1: Resolve {{wiki:query}} placeholders in instructions
+            instructions, wiki_context = self._resolve_wiki_placeholders(instructions)
+            if wiki_context:
+                context["wiki_context"] = wiki_context
+            
             # For now, execution just returns the instructions
             # Future: could invoke LLM with instructions, run scripts, etc.
             result = {
@@ -370,6 +376,57 @@ class SkillExecutor:
                     completed_at = ?
                 WHERE id = ?
             """, (error_message, datetime.now().isoformat(), execution_id))
+    
+    # v0.9.1: Wiki Bridge
+    WIKI_PLACEHOLDER_RE = re.compile(r'\{\{wiki:(.+?)\}\}')
+    
+    def _resolve_wiki_placeholders(self, instructions: str) -> tuple:
+        """
+        Scan instructions for {{wiki:query}} placeholders and replace them
+        with wiki search results.
+        
+        Returns:
+            Tuple of (resolved_instructions, wiki_context_list)
+            wiki_context_list is a list of dicts with query + results.
+        """
+        wiki_context = []
+        matches = list(self.WIKI_PLACEHOLDER_RE.finditer(instructions))
+        
+        if not matches:
+            return instructions, wiki_context
+        
+        resolved = instructions
+        for match in reversed(matches):  # reverse to preserve positions
+            query = match.group(1).strip()
+            try:
+                from noctem.wiki.retrieval import get_context_for_query
+                context_text, results = get_context_for_query(query, n_chunks=3)
+                
+                if context_text:
+                    replacement = f"[Wiki context for '{query}']:\n{context_text}"
+                    wiki_context.append({
+                        "query": query,
+                        "results_count": len(results),
+                        "context_preview": context_text[:200],
+                    })
+                else:
+                    replacement = f"[No wiki results for '{query}']"
+                    wiki_context.append({
+                        "query": query,
+                        "results_count": 0,
+                        "context_preview": None,
+                    })
+            except Exception as e:
+                replacement = f"[Wiki lookup failed for '{query}': {e}]"
+                wiki_context.append({
+                    "query": query,
+                    "results_count": 0,
+                    "error": str(e),
+                })
+            
+            resolved = resolved[:match.start()] + replacement + resolved[match.end():]
+        
+        return resolved, wiki_context
     
     def _log_stage(self, trace_id: str, stage: str, skill_id: int, data: dict):
         """Log execution stage to execution_logs table."""

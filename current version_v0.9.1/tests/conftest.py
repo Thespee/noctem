@@ -72,6 +72,14 @@ def ensure_db_path():
     except Exception:
         pass  # Tables might not exist yet
     
+    # Clean up feedback tables before each test for isolation
+    try:
+        with get_db() as conn:
+            conn.execute("DELETE FROM feedback_questions")
+            conn.execute("DELETE FROM feedback_sessions")
+    except Exception:
+        pass  # Tables might not exist yet
+    
     yield
     
     db.DB_PATH = original_path

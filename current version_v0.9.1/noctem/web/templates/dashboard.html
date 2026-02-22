@@ -423,8 +423,10 @@
             <!-- Quick Navigation -->
             <div class="quick-nav">
                 <a href="/" class="active">📊 Dashboard</a>
+                <a href="/calendar/view">📅 Calendar</a>
+                <a href="/tasks/upcoming">📋 Upcoming</a>
+                <a href="/tasks/projects">📊 Projects</a>
                 <a href="/voice">🎤 Voice</a>
-                <a href="/calendar">📅 Calendar</a>
                 <a href="/skills">🧩 Skills</a>
                 <a href="/prompts">⚙️ Prompts</a>
                 <a href="/settings">🔧 Settings</a>
@@ -441,6 +443,17 @@
                 <span class="status-item">
                     🐢 Queue: {{ slow_status.queue.pending }}
                 </span>
+                {% if feedback_status %}
+                <span class="status-item">
+                    📝 Sessions: {{ feedback_status.sessions_completed_this_week or 0 }} done
+                    {% if feedback_status.total_pending_questions %}
+                    · {{ feedback_status.total_pending_questions }} pending
+                    {% endif %}
+                    {% if feedback_status.next_session %}
+                    · next {{ feedback_status.next_session }}
+                    {% endif %}
+                </span>
+                {% endif %}
             </div>
             
             <!-- Week Table (Mon-Sun) -->

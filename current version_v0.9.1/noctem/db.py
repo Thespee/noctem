@@ -447,6 +447,36 @@ CREATE INDEX IF NOT EXISTS idx_sources_trust ON sources(trust_level);
 CREATE INDEX IF NOT EXISTS idx_sources_file_path ON sources(file_path);
 CREATE INDEX IF NOT EXISTS idx_chunks_source ON knowledge_chunks(source_id);
 CREATE INDEX IF NOT EXISTS idx_chunks_chunk_id ON knowledge_chunks(chunk_id);
+
+-- v0.9.1: Feedback sessions (Butler-driven task disambiguation)
+CREATE TABLE IF NOT EXISTS feedback_sessions (
+    id INTEGER PRIMARY KEY,
+    session_type TEXT DEFAULT 'scheduled',  -- 'scheduled', 'user_initiated'
+    status TEXT DEFAULT 'pending'
+        CHECK(status IN ('pending', 'active', 'completed', 'skipped')),
+    scheduled_for TIMESTAMP,
+    started_at TIMESTAMP,
+    completed_at TIMESTAMP,
+    questions_asked INTEGER DEFAULT 0,
+    questions_answered INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS feedback_questions (
+    id INTEGER PRIMARY KEY,
+    session_id INTEGER REFERENCES feedback_sessions(id),
+    target_type TEXT,              -- 'task', 'project', 'thought'
+    target_id INTEGER,             -- ID of the target entity
+    question_text TEXT NOT NULL,
+    answer_text TEXT,
+    status TEXT DEFAULT 'pending'
+        CHECK(status IN ('pending', 'answered', 'skipped')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- v0.9.1 indexes
+CREATE INDEX IF NOT EXISTS idx_feedback_sessions_status ON feedback_sessions(status, scheduled_for);
+CREATE INDEX IF NOT EXISTS idx_feedback_questions_session ON feedback_questions(session_id, status);
 """
 
 

@@ -1,4 +1,4 @@
-# Noctem v0.9.X Implementation Plan (v2)
+# Noctem v0.9.X Implementation Plan (v3)
 
 *Updated: 2026-02-17*
 *Supersedes: 0.9.X Plan.md*
@@ -20,20 +20,47 @@ Note the updated version implementation order at the end of the document;
 
 ## Unsolved Issues (Tracked)
 
-| Issue | Status | Target Version |
-|-------|--------|----------------|
-| Rules-based capture limitations | Solution identified (embeddings) | 0.9.2 |
-| Context exhaustion for small models | Solution identified (observation masking) | 0.9.3 |
-| Access/sandboxing for agents | Solution identified (container isolation) | 0.9.5 |
-| Zero-downtime updates | Solution identified (Gunicorn HUP) | 0.9.4 |
-| Butler contact guidance | Guideline: ~5 sessions/week (no hard limit) | 0.9.3 |
+| Issue                                  | Status                                      | Target Version |
+| -------------------------------------- | ------------------------------------------- | -------------- |
+| Rules-based capture limitations        | Solution identified (embeddings)            | 0.9.2          |
+| Context exhaustion for small models    | Solution identified (observation masking)   | 0.9.3          |
+| Access/sandboxing for agents           | Solution identified (container isolation)   | 0.9.5          |
+| Zero-downtime updates                  | Solution identified (Gunicorn HUP)          | 0.9.4          |
+| Butler contact guidance                | Guideline: ~5 sessions/week (no hard limit) | 0.9.3          |
+| Human <-> System Interface isn't ideal | Steal more websites                         | 0.9.1          |
+## Personal Skills: 
 
+
+| Skill             | Description                                                                                                                                | Infrastructure Needed                        |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
+| **Habit Builder** | Track recurring behaviors; streaks and break recovery; Butler prompts at optimal times; analyze patterns over time                         | v0.8 skills + v0.7 logging                   |
+| Fitness Tracking  | Log workouts, integrate with health data exports; surface trends                                                                           | Wiki (0.9) for storing routines              |
+| Meal Planning     | Weekly meal prep suggestions; grocery list generation; recipe wiki integration                                                             | Wiki (0.9) + external API skills             |
+| Finance Awareness | Budget tracking; spending pattern alerts; bill reminders                                                                                   | Durable workflows (1.0) for recurring checks |
+| Reading List      | Track books/articles; surface "time to read" suggestions in calendar gaps                                                                  | Wiki (0.9) + suggestion service              |
+| Wiki              | viewable over obsidian with yaml or markdown files, or a wikipedia like web dashboard                                                      |                                              |
+| Wiki How          | Database of "problems" that the system has run into and how to solve them; just a record keeping device for now; should plug into the wiki | WIki                                         |
+
+## Priority Implementation Summary
+
+| Version   | Focus                             | Estimate | Depends On |
+| --------- | --------------------------------- | -------- | ---------- |
+| 0.9.1     | Wiki CLI, quick wins              | 4-6h     | —          |
+| 0.9.**2** | Zero-downtime deployment          | 4-6h     | —          |
+| 0.9.**3** | Embedding classification          | 6-8h     | —          |
+| 0.9.**4** | Context mgmt, adaptive sessions   | 8-10h    | —          |
+| 0.9.5     | ID layer, Agent Alfred foundation | 12-16h   | 0.9.2      |
+| 0.9.**6** | Digital Aristotle                 | 20-30h   | 0.9.1      |
+| 0.9.**7** | Improve ego agent                 | 10-14h   | 0.9.5      |
+
+**Total 0.9.x estimate:** 85-120 hours
+**Target for 1.0:** After 0.9.x stable and daily-driven
 ---
 
 ## Version Plan
 
 ### v0.9.1 — Wiki CLI & Quick Wins (Current Priority)
-**Goal:** Make the wiki usable, not just implemented.
+**Goal:** Make the wiki usable, not just implemented; make some quick quality of life changes; add more interaction to the webdashboard
 **Estimate:** 4-6 hours
 
 **Deliverables:**
@@ -49,19 +76,60 @@ Note the updated version implementation order at the end of the document;
    - Add `wiki_context` field to skill execution input
    - Skills can request wiki retrieval in instructions
 
-3. Web dashboard — Butler status widget
-   - Feedback sessions: X/5 remaining this week
-   - Next scheduled session
-   - [Summon] button
+3. Web dashboard — 
+	*skills page also produces an internal error at the moment..*
+	1. Butler status widget (top of main page)
+	   - Feedback sessions: When is the next planned one; should always be at least 1 coming up
+	2. Updated calendar page:
+	   -  I want it to reflect the design of google calendar more; Going to attach an image for context;
+	   - don't worry about colors for the moment, make the background similar to how the rest of the website is with an appropriate dulled blue to indicate calendar events
+	   - I want the synced calendars that we're pulling data from on the left, along with the buttons to refresh them 
+	3. Todoist Like Task Manager:
+	   - 2 pages: an upcoming few days + overdue page as seen in the weekly image; a project tasks page, as seen in the projects image
 
+4. Change all commands to use '.' to identify them; give more actions command triggers (eg .t for creating a task, .p for a project, etc.) 
 **Implementation notes:**
 - Use existing `noctem/wiki/` module functions
 - Follow existing CLI patterns (click groups)
 - Status widget: `/api/butler/status` endpoint + JS polling (30s)
 
 ---
+### v0.9.2— Zero-Downtime Deployment
+**Goal:** Update system without service interruption; 
+**Estimate:** 4-6 hours
 
-### v0.9.2 — Embedding-Based Classification
+**Deliverables:**
+1. Gunicorn configuration for graceful restarts
+   ```python
+   # gunicorn.conf.py
+   bind = "0.0.0.0:8080"
+   workers = 2
+   worker_class = "sync"
+   graceful_timeout = 30
+   pidfile = "/app/gunicorn.pid"
+   ```
+
+2. Deployment script (`scripts/deploy.sh`)
+   ```bash
+   # Pull new code
+   # Run migrations (backwards-compatible)
+   # Send HUP signal for graceful restart
+   kill -HUP $(cat /app/gunicorn.pid)
+   ```
+
+3. Alembic migration setup
+   - Initialize Alembic for schema migrations
+   - Migration backwards-compatibility policy
+   - Pre-deployment validation script
+
+4. Health check endpoint (`/api/health`)
+   - Version info
+   - Database connectivity
+   - Model availability
+
+---
+
+### v0.9.3 — Embedding-Based Classification
 **Goal:** Move beyond regex rules for intent detection.
 **Estimate:** 6-8 hours
 
@@ -94,7 +162,7 @@ Note the updated version implementation order at the end of the document;
 
 ---
 
-### v0.9.3 — Context Management & Adaptive Feedback
+### v0.9.4 — Context Management & Adaptive Feedback
 **Goal:** Handle context exhaustion; replace fixed contact limit.
 **Estimate:** 8-10 hours
 
@@ -137,45 +205,11 @@ CREATE TABLE feedback_sessions (
 
 ---
 
-### v0.9.4 — Zero-Downtime Deployment
-**Goal:** Update system without service interruption.
-**Estimate:** 4-6 hours
-
-**Deliverables:**
-1. Gunicorn configuration for graceful restarts
-   ```python
-   # gunicorn.conf.py
-   bind = "0.0.0.0:8080"
-   workers = 2
-   worker_class = "sync"
-   graceful_timeout = 30
-   pidfile = "/app/gunicorn.pid"
-   ```
-
-2. Deployment script (`scripts/deploy.sh`)
-   ```bash
-   # Pull new code
-   # Run migrations (backwards-compatible)
-   # Send HUP signal for graceful restart
-   kill -HUP $(cat /app/gunicorn.pid)
-   ```
-
-3. Alembic migration setup
-   - Initialize Alembic for schema migrations
-   - Migration backwards-compatibility policy
-   - Pre-deployment validation script
-
-4. Health check endpoint (`/api/health`)
-   - Version info
-   - Database connectivity
-   - Model availability
-
----
 
 ### v0.9.5 — ID Layer & Alfred Foundation
 **Goal:** Implement the instant response layer and evolved Butler.
 **Estimate:** 12-16 hours
-
+**DO YOU WANT TO CHANGE PATTERN TO ALWAYS HIT BUTLER UNLESS ITS A COMMAND?**
 **Deliverables:**
 1. ID Layer (`noctem/fast/id_layer.py`)
    - Instant acknowledgment (<50ms)
@@ -196,6 +230,7 @@ CREATE TABLE feedback_sessions (
    - Add system task creation foundation; this guy creates the tasks  that the system must complete based on what I send and what tasks exist in the database
    - Add agent dispatch stub (for future egos); at the moment Alfred handles all the tasks
    - Implement follow-up response (sends second message after processing)
+   - the chat between myself and Alfred should have a shared history between all instances; 
 
 3. Telegram integration update
    - ID layer responds first: "Added 'Buy milk' for tomorrow"
@@ -252,47 +287,8 @@ CREATE TABLE agent_runs (
 
 ---
 
-# vvv SKIP FOR NOW vvv
-### v0.9.7 — Remaining Egos (Plan, Do, Know) 
-**Goal:** Complete the ego agent model.
-**Estimate:** 20-30 hours
 
-**Deliverables:**
-1. Plan agent
-   - Access: Full DB (read), projects/goals
-   - Skills: scheduling, prioritization, goal decomposition
-   - Web page: `/agents/plan` with goals/projects block
-
-2. Do agent
-   - Access: Task DB, calendar, limited external
-   - Skills: task completion, time management
-   - Web page: `/agents/do` with active tasks queue
-
-3. Know agent
-   - Access: Wiki, sources, skills registry
-   - Skills: RAG, citation, fact verification
-   - Web page: `/agents/know` with wiki search
-
-4. Interface agent (lightweight)
-   - Handles web/API/Telegram formatting
-   - No separate page initially
-
-**Routing logic in Alfred:**
-```python
-def route_to_agent(thought):
-    if thought.kind == "question":
-        return "know"
-    elif thought.kind == "actionable" and is_task_like(thought):
-        return "do"
-    elif thought.mentions_planning():
-        return "plan"
-    else:
-        return "do"  # Default
-```
-
----
-# ^^^ SKIP FOR NOW ^^^
-### v0.9.8+ — Digital Aristotle (Learning)
+### v0.9.7+ — Digital Aristotle (Learning)
 **Goal:** Transform wiki into active learning system.
 **Estimate:** 20-30 hours
 
@@ -364,21 +360,7 @@ def route_to_agent(thought):
 
 ---
 
-## Priority Summary
 
-| Version   | Focus                             | Estimate   | Depends On |
-| --------- | --------------------------------- | ---------- | ---------- |
-| 0.9.1     | Wiki CLI, quick wins              | 4-6h       | —          |
-| 0.9.**3** | Embedding classification          | 6-8h       | —          |
-| 0.9.**4** | Context mgmt, adaptive sessions   | 8-10h      | —          |
-| 0.9.**2** | Zero-downtime deployment          | 4-6h       | —          |
-| 0.9.5     | ID layer, Agent Alfred foundation | 12-16h     | 0.9.2      |
-| 0.9.**7** | Improve ego agent                 | 10-14h     | 0.9.5      |
-| ~~0.9.7~~ | ~~Remaining egos~~                | ~~20-30h~~ | ~~0.9.6~~  |
-| 0.9.**6** | Digital Aristotle                 | 20-30h     | 0.9.1      |
-
-**Total 0.9.x estimate:** 85-120 hours
-**Target for 1.0:** After 0.9.x stable and daily-driven
 
 ---
 

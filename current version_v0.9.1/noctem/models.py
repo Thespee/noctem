@@ -1155,3 +1155,83 @@ class KnowledgeChunk:
             created_at=parse_dt(row["created_at"]),
             source=source,
         )
+
+
+# =============================================================================
+# v0.9.1: Feedback Session Models
+# =============================================================================
+
+@dataclass
+class FeedbackSession:
+    """A feedback session for disambiguating tasks and projects."""
+    id: Optional[int] = None
+    session_type: str = "scheduled"  # 'scheduled', 'user_initiated'
+    status: str = "pending"  # 'pending', 'active', 'completed', 'skipped'
+    scheduled_for: Optional[datetime] = None
+    started_at: Optional[datetime] = None
+    completed_at: Optional[datetime] = None
+    questions_asked: int = 0
+    questions_answered: int = 0
+    created_at: Optional[datetime] = None
+
+    @classmethod
+    def from_row(cls, row) -> "FeedbackSession":
+        if row is None:
+            return None
+        
+        def parse_dt(val):
+            if isinstance(val, str):
+                try:
+                    return datetime.fromisoformat(val)
+                except ValueError:
+                    return None
+            return val
+        
+        return cls(
+            id=row["id"],
+            session_type=row["session_type"] or "scheduled",
+            status=row["status"] or "pending",
+            scheduled_for=parse_dt(row["scheduled_for"]),
+            started_at=parse_dt(row["started_at"]),
+            completed_at=parse_dt(row["completed_at"]),
+            questions_asked=row["questions_asked"] or 0,
+            questions_answered=row["questions_answered"] or 0,
+            created_at=parse_dt(row["created_at"]),
+        )
+
+
+@dataclass
+class FeedbackQuestion:
+    """A question within a feedback session."""
+    id: Optional[int] = None
+    session_id: Optional[int] = None
+    target_type: Optional[str] = None  # 'task', 'project', 'thought'
+    target_id: Optional[int] = None
+    question_text: str = ""
+    answer_text: Optional[str] = None
+    status: str = "pending"  # 'pending', 'answered', 'skipped'
+    created_at: Optional[datetime] = None
+
+    @classmethod
+    def from_row(cls, row) -> "FeedbackQuestion":
+        if row is None:
+            return None
+        
+        def parse_dt(val):
+            if isinstance(val, str):
+                try:
+                    return datetime.fromisoformat(val)
+                except ValueError:
+                    return None
+            return val
+        
+        return cls(
+            id=row["id"],
+            session_id=row["session_id"],
+            target_type=row["target_type"],
+            target_id=row["target_id"],
+            question_text=row["question_text"],
+            answer_text=row["answer_text"],
+            status=row["status"] or "pending",
+            created_at=parse_dt(row["created_at"]),
+        )

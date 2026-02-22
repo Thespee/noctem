@@ -1,12 +1,32 @@
-# Noctem v0.9.0 User Guide
+# Noctem v0.9.1 User Guide
 ## The Graceful Butler: Fast Capture, Slow Reflection, Self-Improvement, Skills, Personal Wiki
 
 ---
 
-## What's New in v0.9.0
+## What's New in v0.9.1
 
-### Personal Wiki (Knowledge Base)
-Noctem now includes a personal knowledge base that lets you ingest documents and query them with semantic search. Every answer is grounded in YOUR sources with proper citations.
+### Wiki CLI & Quick Wins
+The wiki is now fully usable from the command line. New web pages bring a Google Calendar-like view and Todoist-style task management. Commands are faster with `.` shorthand prefixes.
+
+**Key Features:**
+- **Wiki CLI** - `wiki ingest`, `wiki search`, `wiki ask`, `wiki sources`, `wiki status`, `wiki verify`
+- **Feedback sessions** - Scheduled clarification sessions to resolve ambiguous tasks
+- **Command shortcuts** - `.t` for task, `.p` for project, `.d` for done, `.w` for wiki, etc.
+- **Calendar view** - `/calendar/view` — Google Calendar-like weekly grid
+- **Task views** - `/tasks/upcoming` (overdue + upcoming) and `/tasks/projects` (project board)
+- **Skill-Wiki bridge** - Skills can now request wiki context during execution
+
+**Quick Start:**
+1. Drop files into `noctem/data/sources/`
+2. Run `wiki ingest` to process them
+3. Query with `wiki ask "your question"`
+4. Use `.t buy groceries tomorrow` to quickly add tasks
+5. Visit `/calendar/view` for a weekly calendar or `/tasks/projects` for the project board
+
+---
+
+## v0.9.0: Personal Wiki (Knowledge Base)
+Noctem includes a personal knowledge base that lets you ingest documents and query them with semantic search. Every answer is grounded in YOUR sources with proper citations.
 
 **Key Features:**
 - **Multi-format ingestion** - PDF, Markdown, and TXT files
@@ -14,11 +34,6 @@ Noctem now includes a personal knowledge base that lets you ingest documents and
 - **Citation system** - Every answer includes source, page/section, and direct quotes
 - **Trust levels** - Tag sources as personal (1), curated (2), or web (3)
 - **Local-first** - All processing via Ollama; embeddings stored in ChromaDB locally
-
-**Quick Start:**
-1. Drop files into `noctem/data/sources/`
-2. Run `noctem wiki ingest` to process them
-3. Query with `noctem wiki ask "your question"`
 
 ---
 
@@ -51,7 +66,7 @@ Skills are Noctem's extensible system for packaged knowledge and procedures. Thi
 ```powershell
 # Clone the repository
 git clone https://github.com/YOUR_USERNAME/noctem.git
-cd noctem/"0.X.X Personal MVP"/"0.8.0 skills infrastrucutre"
+cd noctem/"current version_v0.9.1"
 
 # Create virtual environment
 python -m venv venv
@@ -104,7 +119,7 @@ ollama pull qwen2.5:7b-instruct-q4_K_M
 # Run all tests to verify everything works
 .\venv\Scripts\python.exe -m pytest tests/ -v
 
-# Should see: "~400+ passed" (includes 90 skill tests)
+# Should see: "~500+ passed" (includes 90 skill + 95 wiki tests)
 ```
 
 ### Step 6: Configure Telegram Bot (Optional)
@@ -297,16 +312,29 @@ Fast mode catches every thought instantly (<500ms). Just type naturally:
 - `!2` = Medium priority (default)
 - `!3` = Low priority
 
+**Shortcut Commands (v0.9.1):**
+- `.t <text>` — Quick task creation (`.t buy groceries tomorrow`)
+- `.p <name>` — Quick project creation
+- `.g <name>` — Quick goal creation
+- `.d <n|name>` — Quick done (`.d 1` or `.d buy milk`)
+- `.s <n|name>` — Quick skip
+- `.w <cmd>` — Wiki shorthand (`.w ask "question"`)
+
 **View Commands:**
 - `today` or `/today` — Today's briefing
 - `week` or `/week` — Week ahead
 - `projects` or `/projects` — Active projects
-- `habits` or `/habits` — Habit status
 
 **Status Commands:**
 - `status` or `/status` — System health (butler, slow mode, LLM)
 - `suggest` or `/suggest` — View AI suggestions
 - `slow` — Slow mode queue status
+- `/session` — Start a feedback session (clarify ambiguous tasks)
+
+**Web Pages (v0.9.1):**
+- `/calendar/view` — Weekly calendar (Google Calendar-style)
+- `/tasks/upcoming` — Upcoming tasks + overdue (Todoist-style)
+- `/tasks/projects` — Project board with task columns
 
 ### Self-Improvement Engine (v0.7.0)
 
